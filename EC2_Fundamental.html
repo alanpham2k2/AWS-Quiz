@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 37491492, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["Convertible Reserved Instances are good for long workloads with flexible instances. But, it does not provide you the biggest discount.", "Dedicated Hosts are good for companies with strong compliance needs or for software that have complicated licensing models. This is the most expensive EC2 Purchasing Option available.", "Spot Instances are good for short workloads and this is the cheapest EC2 Purchasing Option. But, they are less reliable because you can lose your EC2 instance."], "answers": ["<p>Convertible Reserved Instances</p>", "<p>Dedicated Hosts</p>", "<p>Spot Instances</p>"], "relatedLectureIds": "", "question": "<p>Which EC2 Purchasing Option can provide you the biggest discount, but it is not suitable for critical jobs or databases?</p>"}, "correct_response": ["c"], "section": "", "question_plain": "Which EC2 Purchasing Option can provide you the biggest discount, but it is not suitable for critical jobs or databases?", "related_lectures": []}, {"_class": "assessment", "id": 37491498, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["This is a distractor. We will see this service later in the course. NACL operates at the subnet level.", "Security Groups operate at the EC2 instance level and can control traffic.", "IAM Policies enable you to manage access to AWS services and resources securely."], "answers": ["<p>Network Access Control List (NACL)</p>", "<p>Security Groups</p>", "<p>IAM Policies</p>"], "relatedLectureIds": "", "question": "<p>What should you use to control traffic in and out of EC2 instances?</p>"}, "correct_response": ["b"], "section": "", "question_plain": "What should you use to control traffic in and out of EC2 instances?", "related_lectures": []}, {"_class": "assessment", "id": 37491682, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["EC2 Reserved Instances can be reserved for 1 or 3 years only.", "", "", "You must reserve the instance only for 1 or 3 years, not any time in between."], "answers": ["<p>1 or 3 years</p>", "<p>2 or 4 years</p>", "<p>6 months or 1 year</p>", "<p>Anytime between 1 and 3 years</p>"], "relatedLectureIds": "", "question": "<p>How long can you reserve an EC2 Reserved Instance?</p>"}, "correct_response": ["a"], "section": "", "question_plain": "How long can you reserve an EC2 Reserved Instance?", "related_lectures": []}, {"_class": "assessment", "id": 37491686, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["Storage Optimized EC2 instances are great for workloads requiring high, sequential read/write access to large data sets on local storage.", "Compute Optimized EC2 instances are great for compute-intensive workloads requiring high-performance processors (e.g., batch processing, media transcoding, high-performance computing, scientific modeling &amp; machine learning, and dedicated gaming servers).", "Memory Optimized EC2 instances are great for workloads requiring large data sets in memory.", "General Purpose EC2 instances are great for a diversity of workloads that require a balance between computing, memory, and network."], "answers": ["<p>Storage Optimized</p>", "<p>Compute Optimized</p>", "<p>Memory Optimized</p>", "<p>General Purpose</p>"], "relatedLectureIds": "", "question": "<p>You would like to deploy a High-Performance Computing (HPC) application on EC2 instances. Which EC2 instance type should you choose?</p>"}, "correct_response": ["b"], "section": "", "question_plain": "You would like to deploy a High-Performance Computing (HPC) application on EC2 instances. Which EC2 instance type should you choose?", "related_lectures": []}, {"_class": "assessment", "id": 37491692, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["Reserved Instances are good for long workloads. You can reserve EC2 instances for 1 or 3 years.", "Spot Instances are good for short workloads but are less reliable.", "On-demand Instances are good for short workloads with predictable pricing."], "answers": ["<p>Reserved Instances</p>", "<p>Spot Instances</p>", "<p>On-Demand Instances</p>"], "relatedLectureIds": "", "question": "<p>Which EC2 Purchasing Option should you use for an application you plan to run on a server continuously for 1 year?</p>"}, "correct_response": ["a"], "section": "", "question_plain": "Which EC2 Purchasing Option should you use for an application you plan to run on a server continuously for 1 year?", "related_lectures": []}, {"_class": "assessment", "id": 37491698, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>Connect to each EC2 instance using SSH, then install the required software and update your OS packages manually</p>", "<p>Write a bash script that installs the required software and updates to your OS, then contact AWS Support and provide them with the script. They will run it on your EC2 instances at launch</p>", "<p>Write a bash script that installs the required software and updates to your OS, then use this script in EC2 User Data when you launch your EC2 instances</p>"], "feedbacks": ["This can be done, but a lot of work to do that takes a lot of time especially if your application will be hosted on a large number of EC2 instances.", "There's no such thing. You can't contact AWS Support to install software and packages on your EC2 instances.", "EC2 User Data is used to bootstrap your EC2 instances using a bash script. This script can contain commands such as installing software/packages, download files from the Internet, or anything you want.  "], "question": "<p>You are preparing to launch an application that will be hosted on a set of EC2 instances. This application needs some software installation and some OS packages need to be updated during the first launch. What is the best way to achieve this when you launch the EC2 instances?</p>", "relatedLectureIds": ""}, "correct_response": ["c"], "section": "", "question_plain": "You are preparing to launch an application that will be hosted on a set of EC2 instances. This application needs some software installation and some OS packages need to be updated during the first launch. What is the best way to achieve this when you launch the EC2 instances?", "related_lectures": []}, {"_class": "assessment", "id": 37491714, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["Compute Optimized EC2 instances are great for compute-intensive workloads requiring high-performance processors (e.g., batch processing, media transcoding, high-performance computing, scientific modeling &amp; machine learning, and dedicated gaming servers).", "Storage Optimized EC2 instances are great for workloads requiring high, sequential read/write access to large data sets on local storage.", "Memory Optimized EC2 instances are great for workloads requiring large data sets in memory.", "General Purpose EC2 instances are great for a diversity of workloads that require a balance between computing, memory, and network."], "answers": ["<p>Compute Optimized</p>", "<p>Storage Optimized</p>", "<p>Memory Optimized</p>", "<p>General Purpose</p>"], "relatedLectureIds": "", "question": "<p>Which EC2 Instance Type should you choose for a critical application that uses an in-memory database?</p>"}, "correct_response": ["c"], "section": "", "question_plain": "Which EC2 Instance Type should you choose for a critical application that uses an in-memory database?", "related_lectures": []}, {"_class": "assessment", "id": 37491722, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["Compute Optimized EC2 instances are great for compute-intensive workloads requiring high-performance processors (e.g., batch processing, media transcoding, high-performance computing, scientific modeling &amp; machine learning, and dedicated gaming servers).", "Storage Optimized EC2 instances are great for workloads requiring high, sequential read/write access to large data sets on local storage.", "Memory Optimized EC2 instances are great for workloads requiring large data sets in memory.", "General Purpose EC2 instances are great for a diversity of workloads that require a balance between computing, memory, and network."], "answers": ["<p>Compute Optimized</p>", "<p>Storage Optimized</p>", "<p>Memory Optimized</p>", "<p>General Purpose</p>"], "relatedLectureIds": "", "question": "<p>You have an e-commerce application with an OLTP database hosted on-premises. This application has popularity which results in its database has thousands of requests per second. You want to migrate the database to an EC2 instance. Which EC2 Instance Type should you choose to handle this high-frequency OLTP database?</p>"}, "correct_response": ["b"], "section": "", "question_plain": "You have an e-commerce application with an OLTP database hosted on-premises. This application has popularity which results in its database has thousands of requests per second. You want to migrate the database to an EC2 instance. Which EC2 Instance Type should you choose to handle this high-frequency OLTP database?", "related_lectures": []}, {"_class": "assessment", "id": 37491732, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["Security Groups can be attached to multiple EC2 instances within the same AWS Region/VPC.", ""], "answers": ["<p>False</p>", "<p>True</p>"], "relatedLectureIds": "", "question": "<p>Security Groups can be attached to only one EC2 instance.</p>"}, "correct_response": ["a"], "section": "", "question_plain": "Security Groups can be attached to only one EC2 instance.", "related_lectures": []}, {"_class": "assessment", "id": 37491740, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["Convertible Reserved Instances are good for long workloads with flexible instances. But, it does not provide you the biggest discount.", "Dedicated Hosts are good for companies with strong compliance needs or for software that have complicated licensing models. This is the most expensive EC2 Purchasing Option available.", "Spot Instances are good for short workloads and this is the cheapest EC2 Purchasing Option. But, they are less reliable because you can lose your EC2 instance."], "answers": ["<p>Convertible Reserved Instances</p>", "<p>Dedicated Hosts</p>", "<p>Spot Instances</p>"], "relatedLectureIds": "", "question": "<p>You're planning to migrate on-premises applications to AWS. Your company has strict compliance requirements that require your applications to run on dedicated servers. You also need to use your own server-bound software license to reduce costs. Which EC2 Purchasing Option is suitable for you?</p>"}, "correct_response": ["b"], "section": "", "question_plain": "You're planning to migrate on-premises applications to AWS. Your company has strict compliance requirements that require your applications to run on dedicated servers. You also need to use your own server-bound software license to reduce costs. Which EC2 Purchasing Option is suitable for you?", "related_lectures": []}, {"_class": "assessment", "id": 37491742, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>Spot Instances</p>", "<p>On-Demand</p>", "<p>Dedicated Hosts</p>", "<p>Reserved Instances</p>"], "feedbacks": ["", "", "", ""], "relatedLectureIds": "", "question": "<p>You would like to deploy a database technology on an EC2 instance and the vendor license bills you based on the physical cores and underlying network socket visibility. Which EC2 Purchasing Option allows you to get visibility into them?</p>"}, "correct_response": ["c"], "section": "", "question_plain": "You would like to deploy a database technology on an EC2 instance and the vendor license bills you based on the physical cores and underlying network socket visibility. Which EC2 Purchasing Option allows you to get visibility into them?", "related_lectures": []}, {"_class": "assessment", "id": 70954906, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Spot Fleet is a set of Spot Instances and optionally ...............</p>", "relatedLectureIds": "", "feedbacks": ["", "Spot Fleet is a set of Spot Instances and optionally On-demand Instances. It allows you to automatically request Spot Instances with the lowest price.", "", ""], "answers": ["<p>Reserved Instances</p>", "<p>On-Demand Instances</p>", "<p>Dedicated Hosts</p>", "<p>Dedicated Instances</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "Spot Fleet is a set of Spot Instances and optionally ...............", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>
