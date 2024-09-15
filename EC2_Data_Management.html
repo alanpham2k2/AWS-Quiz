@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 37492206, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have just terminated an EC2 instance in <code>us-east-1a</code>, and its attached EBS volume is now available. Your teammate tries to attach it to an EC2 instance in <code>us-east-1b</code> but he can't. What is a possible cause for this?</p>", "relatedLectureIds": "", "answers": ["<p>He's missing IAM permissions</p>", "<p>EBS volumes are locked to an AWS Region</p>", "<p>EBS volumes are locked to an Availability Zone</p>"], "feedbacks": ["", "", "EBS Volumes are created for a specific AZ. It is possible to migrate them between different AZs using EBS Snapshots."]}, "correct_response": ["c"], "section": "", "question_plain": "You have just terminated an EC2 instance in us-east-1a, and its attached EBS volume is now available. Your teammate tries to attach it to an EC2 instance in us-east-1b but he can't. What is a possible cause for this?", "related_lectures": []}, {"_class": "assessment", "id": 37492212, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>Both the root volume type and the EBS volume type will be deleted</p>", "<p>The Root volume type will be deleted and the EBS volume type will not be deleted</p>", "<p>The root volume type will not be deleted and the EBS volume type will be deleted</p>", "<p>Both the root volume type and the EBS volume type will not be deleted</p>"], "relatedLectureIds": "", "question": "<p>You have launched an EC2 instance with two EBS volumes, Root volume type and the other EBS volume type to store the data. A month later you are planning to terminate the EC2 instance. What's the default behavior that will happen to each EBS volume?</p>", "feedbacks": ["", "By default, the Root volume type will be deleted as its \"Delete On Termination\" attribute checked by default. Any other EBS volume types will not be deleted as its \"Delete On Termination\" attribute disabled by default.", "", ""]}, "correct_response": ["b"], "section": "", "question_plain": "You have launched an EC2 instance with two EBS volumes, Root volume type and the other EBS volume type to store the data. A month later you are planning to terminate the EC2 instance. What's the default behavior that will happen to each EBS volume?", "related_lectures": []}, {"_class": "assessment", "id": 37492306, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You can use an AMI in N.Virginia Region <code>us-east-1</code> to launch an EC2 instance in any AWS Region.</p>", "feedbacks": ["", "AMIs are built for a specific AWS Region, they're unique for each AWS Region. You can't launch an EC2 instance using an AMI in another AWS Region, but you can copy the AMI to the target AWS Region and then use it to create your EC2 instances."], "answers": ["<p>True</p>", "<p>False</p>"], "relatedLectureIds": ""}, "correct_response": ["b"], "section": "", "question_plain": "You can use an AMI in N.Virginia Region us-east-1 to launch an EC2 instance in any AWS Region.", "related_lectures": []}, {"_class": "assessment", "id": 37492314, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which of the following EBS volume types can be used as boot volumes when you create EC2 instances?</p>", "feedbacks": ["", "When creating EC2 instances, you can only use the following EBS volume types as boot volumes: gp2, gp3, io1, io2, and Magnetic (Standard).", ""], "relatedLectureIds": "", "answers": ["<p><code>gp2</code>, <code>gp3</code>, <code>st1</code>, <code>sc1</code> </p>", "<p><code>gp2</code>, <code>gp3</code>, <code>io1</code>, <code>io2</code> </p>", "<p><code>io1</code>, <code>io2</code>, <code>st1</code>, <code>sc1</code> </p>"]}, "correct_response": ["b"], "section": "", "question_plain": "Which of the following EBS volume types can be used as boot volumes when you create EC2 instances?", "related_lectures": []}, {"_class": "assessment", "id": 37492318, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>Attach the same EBS volume to multiple EC2 instances in multiple AZs</p>", "<p>Attach multiple EBS volumes in the same AZ to the same EC2 instance</p>", "<p>Attach the same EBS volume to multiple EC2 instances in the same AZ</p>", "<p>Attach multiple EBS volumes in multiple AZs to the same EC2 instance</p>"], "feedbacks": ["", "", "Using EBS Multi-Attach, you can attach the same EBS volume to multiple EC2 instances in the same AZ. Each EC2 instance has full read/write permissions.", ""], "question": "<p>What is EBS Multi-Attach?</p>", "relatedLectureIds": ""}, "correct_response": ["c"], "section": "", "question_plain": "What is EBS Multi-Attach?", "related_lectures": []}, {"_class": "assessment", "id": 37492324, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You would like to encrypt an unencrypted EBS volume attached to your EC2 instance. What should you do?</p>", "relatedLectureIds": "", "answers": ["<p>Create an EBS snapshot of your EBS volume. Copy the snapshot and tick the option to encrypt the copied snapshot. Then, use the encrypted snapshot to create a new EBS volume</p>", "<p>Select your EBS volume, choose <strong>Edit Attributes</strong>, then tick the <strong>Encrypt using KMS</strong> option</p>", "<p>Create a new encrypted EBS volume, then copy data from your unencrypted EBS volume to the new EBS volume.</p>", "<p>Submit a request to AWS Support to encrypt your EBS volume</p>"], "feedbacks": ["", "", "This can be done but it'll take a lot of manual work, time, and will be costly especially if your EBS volume has a lot of data.", ""]}, "correct_response": ["a"], "section": "", "question_plain": "You would like to encrypt an unencrypted EBS volume attached to your EC2 instance. What should you do?", "related_lectures": []}, {"_class": "assessment", "id": 37492462, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>Use EBS</p>", "<p>Use EFS</p>", "<p>Use an Instance Store</p>"], "relatedLectureIds": "", "question": "<p>You have a fleet of EC2 instances distributes across AZs that process a large data set. What do you recommend to make the same data to be accessible as an NFS drive to all of your EC2 instances?</p>", "feedbacks": ["EBS volumes are locked to an AZ and can only be mounted on one EC2 instance at a time.", "EFS is a network file system (NFS) that allows you to mount the same file system on EC2 instances that are in different AZs.", "EC2 Instance Store is a storage located on disks that are physically attached to the host of your EC2 instance. Can be used only on one EC2 instance at a time. It's ideal for temporary storage such as buffers, caches, etc."]}, "correct_response": ["b"], "section": "", "question_plain": "You have a fleet of EC2 instances distributes across AZs that process a large data set. What do you recommend to make the same data to be accessible as an NFS drive to all of your EC2 instances?", "related_lectures": []}, {"_class": "assessment", "id": 37492470, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You would like to have a high-performance local cache for your application hosted on an EC2 instance. You don't mind losing the cache upon the termination of your EC2 instance. Which storage mechanism do you recommend as a Solutions Architect?</p>", "relatedLectureIds": "", "feedbacks": ["EBS are network drives which makes it provides less I/O performance than Instance Store.", "EFS volumes are network file systems that can be mounted on many EC2 instances. EFS volumes are accessible through network which makes it provides less performance I/O than Instance Store.", "EC2 Instance Store provides the best disk I/O performance."], "answers": ["<p>EBS</p>", "<p>EFS</p>", "<p>Instance Store</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You would like to have a high-performance local cache for your application hosted on an EC2 instance. You don't mind losing the cache upon the termination of your EC2 instance. Which storage mechanism do you recommend as a Solutions Architect?", "related_lectures": []}, {"_class": "assessment", "id": 37492490, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "feedbacks": ["16,000 is the maximum IOPS you can achieve when you're using the EBS gp2 volume type.", "64,000 is the maximum IOPS you can achieve when you're using EBS io1 or io2 volume types.", "You can run a database on an EC2 instance that uses an Instance Store, but you'll have a problem that the data will be lost if the EC2 instance is stopped (it can be restarted without problems). One solution is that you can set up a replication mechanism on another EC2 instance with an Instance Store to have a standby copy. Another solution is to set up backup mechanisms for your data. It's all up to you how you want to set up your architecture to validate your requirements. In this use case, it's around IOPS, so we have to choose an EC2 Instance Store.", "256,000 is the maximum IOPS you can achieve when you're using the EBS io2 Block Express volume type."], "answers": ["<p>Use an EBS <code>gp2</code> drive</p>", "<p>Use an EBS <code>io1</code> drive</p>", "<p>Use an EC2 Instance Store</p>", "<p>Use an EBS <code>io2</code> Block Express drive</p>"], "question": "<p>You are running a high-performance database that requires an IOPS of 310,000 for its underlying storage. What do you recommend?</p>"}, "correct_response": ["c"], "section": "", "question_plain": "You are running a high-performance database that requires an IOPS of 310,000 for its underlying storage. What do you recommend?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>
