@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multiple Choice Questions</title>
+     <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background-color: #f0f0f0; /* light gray background */
+
+        }
+
+        .question-container {
+
+            margin-bottom: 30px;
+
+            padding: 20px;
+
+            border: 1px solid #ccc; /* light gray border */
+
+            border-radius: 10px; /* rounded corners */
+
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* subtle shadow */
+
+        }
+
+        .result {
+
+            font-weight: bold;
+
+            color: #666; /* dark gray text */
+
+        }
+
+        .submit-btn {
+
+            background-color: #4CAF50; /* green background */
+
+            color: #fff; /* white text */
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+        }
+
+        .submit-btn:hover {
+
+            background-color: #3e8e41; /* darker green on hover */
+
+        }
+
+
+        /* Add media queries for responsiveness */
+
+        @media only screen and (max-width: 768px) {
+
+            /* For tablets and smaller screens */
+
+            .question-container {
+
+                margin-bottom: 20px;
+
+                padding: 15px;
+
+            }
+
+            .submit-btn {
+
+                padding: 8px 15px;
+
+            }
+
+        }
+
+        @media only screen and (max-width: 480px) {
+
+            /* For mobile phones */
+
+            .question-container {
+
+                margin-bottom: 15px;
+
+                padding: 10px;
+
+            }
+
+            .submit-btn {
+
+                padding: 6px 10px;
+
+            }
+
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Question 1 -->
+    <div class="question-container">
+        <h2>Question 1:</h2>
+        <p>What is a proper definition of an IAM Role?</p>
+        <form id="question1">
+            <label>
+                <input type="radio" name="q1" value="A">
+                A. IAM Users in multiple User Groups
+            </label><br>
+            <label>
+                <input type="radio" name="q1" value="B">
+                B. A set of permissions that define what actions are allowed and denied by an entity in the AWS environment
+            </label><br>
+            <label>
+                <input type="radio" name="q1" value="C">
+                C. A collection of users, groups, and roles
+            </label><br>
+            <label>
+                <input type="radio" name="q1" value="D">
+                D. A resource
+            </label><br><br>
+            <button type="button" class="submit-btn" data-question="q1" data-result="result1" data-correct="B">Submit</button>
+        </form>
+        <p id="result1" class="result"></p>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="question-container">
+        <h2>Question 2:</h2>
+        <p>Which of the following is a primary benefit of using cloud computing?</p>
+        <form id="question2">
+            <label>
+                <input type="radio" name="q2" value="A">
+                A. Increased capital expenditures
+            </label><br>
+            <label>
+                <input type="radio" name="q2" value="B">
+                B. Elastic scalability
+            </label><br>
+            <label>
+                <input type="radio" name="q2" value="C">
+                C. Fixed server capacity
+            </label><br>
+            <label>
+                <input type="radio" name="q2" value="D">
+                D. On-premises data storage
+            </label><br><br>
+            <button type="button" class="submit-btn" data-question="q2" data-result="result2" data-correct="B">Submit</button>
+        </form>
+        <p id="result2" class="result"></p>
+    </div>
+
+    <!-- Additional questions can be added similarly -->
+
+    <script>
+        // Function to check the answer
+        function checkAnswer(questionName, resultId, correctAnswer) {
+            // Get all radio buttons for the specified question
+            const radios = document.getElementsByName(questionName);
+            let selectedValue = '';
+            // Loop through radio buttons to find the selected one
+            for (let radio of radios) {
+                if (radio.checked) {
+                    selectedValue = radio.value;
+                    break;
+                }
+            }
+            // Reference to the result paragraph
+            const resultElement = document.getElementById(resultId);
+            // Check if an answer is selected
+            if (selectedValue === '') {
+                resultElement.textContent = 'Please select an answer.';
+                resultElement.style.color = 'orange';
+            } else if (selectedValue === correctAnswer) {
+                resultElement.textContent = 'Correct!';
+                resultElement.style.color = 'green';
+            } else {
+                resultElement.textContent = 'Incorrect.';
+                resultElement.style.color = 'red';
+            }
+        }
+
+        // Wait until the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select all buttons with the class 'submit-btn'
+            const submitButtons = document.querySelectorAll('.submit-btn');
+
+            // Attach click event listeners to each button
+            submitButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const questionName = button.getAttribute('data-question');
+                    const resultId = button.getAttribute('data-result');
+                    const correctAnswer = button.getAttribute('data-correct');
+                    checkAnswer(questionName, resultId, correctAnswer);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
