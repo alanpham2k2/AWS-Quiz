@@ -2,60 +2,72 @@
 <html>
 <head>
     <title>My Website</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
-        /* Add some basic styling to make the nav links display vertically */
-       .navbar-nav {
-            flex-direction: column;
-        }
-       .nav-item {
-            margin-bottom: 10px;
-        }
+      /* Global Styles */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f0f0f0;
+      }
+
+      /* Header Styles */
+      h1 {
+        color: #00698f;
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      /* Navigation Styles */
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        margin-bottom: 10px;
+      }
+
+      a {
+        text-decoration: none;
+        color: #337ab7;
+      }
+
+      a:hover {
+        color: #23527c;
+      }
     </style>
 </head>
 <body>
-  <h1 class="text-center">Welcome to My Website</h1>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="AWS_IAM.html">AWS IAM Quiz <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="EC2_Fundamental.html">EC2 Fundamental Quiz</a>
-        </li>
-	<li class="nav-item">
-          <a class="nav-link" href="EC2_SAA.html">EC2 SAA Quiz</a>
-        </li>
-	<li class="nav-item">
-          <a class="nav-link" href="EC2_Data_Management.html">EC2 Data Management Quiz</a>
-        </li>
-	<li class="nav-item">
-          <a class="nav-link" href="ELB_ASG.html">ELB & ASG Quiz</a>
-        </li>
-	<li class="nav-item">
-          <a class="nav-link" href="RDS_ElastiCache.html">RDS & ElastiCache Quiz</a>
-        </li>
-	<li class="nav-item">
-          <a class="nav-link" href="Route53.html">Route 53 Quiz</a>
-        </li>
-	<li class="nav-item">
-          <a class="nav-link" href="Solutions_Architecture.html">Solution Architecture Quiz</a>
-        </li>
-	<li class="nav-item">
-          <a class="nav-link" href="S3.html">Simple S3 Quiz</a>
-        </li>
-
-
-
-      </ul>
-    </div>
-  </nav>
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <h1>Welcome to My Website</h1>
+  <ul>
+    <li>
+      <a href="AWS_IAM.html">AWS IAM Quiz</a>
+    </li>
+    <li>
+      <a href="EC2_Fundamental.html">EC2 Fundamental Quiz</a>
+    </li>
+	  <li>
+      <a href="EC2_SAA.html">EC2 SAA Quiz</a>
+    </li>
+	  <li>
+      <a href="EC2_Data_Management.html">EC2 Data Management Quiz</a>
+    </li>
+	  <li>
+      <a href="ELB_ASG.html">ELB & ASG Quiz</a>
+    </li>
+	  <li>
+      <a href="RDS_ElastiCache.html">RDS & ElastiCache Quiz</a>
+    </li>
+    <li>
+      <a href="Route53.html">Route 53 Quiz</a>
+    </li>
+    <li>
+      <a href="S3.html">Simple S3 Quiz</a>
+    </li>
+    <li>
+      <a href="Solutions_Architecture.html">Solution Architecture Quiz</a>
+    </li>
+  </ul>
 </body>
 </html>
