@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 37586457, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "feedbacks": ["This is not efficient for scaling purposes.", "This is the way to save further costs as we will run 2 EC2 instances no matter what.", "Our solution won't be highly available anymore.", "Our solution will experience downtime."], "question": "<p>Your website <strong>TriangleSunglasses.com</strong> is hosted on a fleet of EC2 instances managed by an Auto Scaling Group and fronted by an Application Load Balancer. Your ASG has been configured to scale on-demand based on the traffic going to your website. To reduce costs, you have configured the ASG to scale based on the traffic going through the ALB. To make the solution highly available, you have updated your ASG and set the minimum capacity to 2. How can you further reduce the costs while respecting the requirements?</p>", "answers": ["<p>Remove the ALB and use an Elastic IP instead</p>", "<p>Reserve two EC2 instances</p>", "<p>Reduce the minimum capacity to 1</p>", "<p>Reduce the minimum capacity to 0</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "Your website TriangleSunglasses.com is hosted on a fleet of EC2 instances managed by an Auto Scaling Group and fronted by an Application Load Balancer. Your ASG has been configured to scale on-demand based on the traffic going to your website. To reduce costs, you have configured the ASG to scale based on the traffic going through the ALB. To make the solution highly available, you have updated your ASG and set the minimum capacity to 2. How can you further reduce the costs while respecting the requirements?", "related_lectures": []}, {"_class": "assessment", "id": 37586467, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["This will help as the data can be accessed from multiple EC2 instances.", "This will help as the data can be accessed from multiple EC2 instances.", "This will help as the clients send their session data so that our EC2 instances don't need to remember/store session data.", "EBS volumes are created in a specific AZ and can only be attached to one EC2 instance at a time."], "answers": ["<p>Store session data in Amazon RDS</p>", "<p>Store session data in Amazon ElastiCache</p>", "<p>Store session data in the client HTTP cookies</p>", "<p>Store session data on EBS volumes</p>"], "relatedLectureIds": "", "question": "<p>Which of the following will <strong>NOT</strong> help us while designing a <strong>STATELESS</strong> application tier?</p>"}, "correct_response": ["d"], "section": "", "question_plain": "Which of the following will NOT help us while designing a STATELESS application tier?", "related_lectures": []}, {"_class": "assessment", "id": 37586481, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>Store the software updates on EBS and sync them using data replication software from one master in each AZ</p>", "<p>Store the software updates on EFS and mount EFS as a network drive at startup</p>", "<p>Package the software updates as an EBS snapshot and create EBS volumes for each new software update</p>", "<p>Store the software updates on Amazon RDS</p>"], "question": "<p>You want to install software updates on 100s of Linux EC2 instances that you manage. You want to store these updates on shared storage which should be dynamically loaded on the EC2 instances and shouldn't require heavy operations. What do you suggest?</p>", "relatedLectureIds": "", "feedbacks": ["This requires too many operations and is not a native AWS feature.", "EFS is a network file system (NFS) that allows you to mount the same file system to 100s of EC2 instances. Storing software updates on an EFS allows each EC2 instance to access them.", "This requires too many operations although it would work.", "RDS is meant to store relational data, not big binary files."]}, "correct_response": ["b"], "section": "", "question_plain": "You want to install software updates on 100s of Linux EC2 instances that you manage. You want to store these updates on shared storage which should be dynamically loaded on the EC2 instances and shouldn't require heavy operations. What do you suggest?", "related_lectures": []}, {"_class": "assessment", "id": 37586493, "assessment_type": "multiple-choice", "prompt": {"question": "<p>As a Solutions Architect, you're planning to migrate a complex ERP software suite to AWS Cloud. You're planning to host the software on a set of Linux EC2 instances managed by an Auto Scaling Group. The software traditionally takes over an hour to set up on a Linux machine. How do you recommend you speed up the installation process when there's a scale-out event?</p>", "feedbacks": ["Golden AMI is an image that contains all your software installed and configured so that future EC2 instances can boot up quickly from that AMI.", "EC2 User Data allows you to automate the installation steps, but the installation would still take one hour to complete.", "RDS is used to store relational data, not applications.", "Retrieving application setup files from EFS won't help speed up the installation and configuration time."], "answers": ["<p>Use a Golden AMI</p>", "<p>Bootstrap using EC2 User Data</p>", "<p>Store the application in Amazon RDS</p>", "<p>Retrieve the application setup files from EFS</p>"], "relatedLectureIds": ""}, "correct_response": ["a"], "section": "", "question_plain": "As a Solutions Architect, you're planning to migrate a complex ERP software suite to AWS Cloud. You're planning to host the software on a set of Linux EC2 instances managed by an Auto Scaling Group. The software traditionally takes over an hour to set up on a Linux machine. How do you recommend you speed up the installation process when there's a scale-out event?", "related_lectures": []}, {"_class": "assessment", "id": 37586499, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "question": "<p>You're developing an application and would like to deploy it to Elastic Beanstalk with minimal cost. You should run it in ..................</p>", "feedbacks": ["The question mentions that you're still in the development stage and you want to reduce costs. Single Instance Mode will create one EC2 instance and one Elastic IP.", "This will create one or more EC2 instances and one Elastic Load Balancer (this costs more)."], "answers": ["<p>Single Instance Mode</p>", "<p>High Availability Mode</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "You're developing an application and would like to deploy it to Elastic Beanstalk with minimal cost. You should run it in ..................", "related_lectures": []}, {"_class": "assessment", "id": 37586643, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "question": "<p>You're deploying your application to an Elastic Beanstalk environment but you notice that the deployment process is painfully slow. After reviewing the logs, you found that your dependencies are resolved on each EC2 instance each time you deploy. How can you speed up the deployment process with minimal impact?</p>", "answers": ["<p>Remove some dependencies in your code</p>", "<p>Place the dependencies in Amazon EFS</p>", "<p>Create a Golden AMI that contains the dependencies and use that image to launch the EC2 instances</p>"], "feedbacks": ["", "", "Golden AMI is an image that contains all your software, dependencies, and configurations, so that future EC2 instances can boot up quickly from that AMI."]}, "correct_response": ["c"], "section": "", "question_plain": "You're deploying your application to an Elastic Beanstalk environment but you notice that the deployment process is painfully slow. After reviewing the logs, you found that your dependencies are resolved on each EC2 instance each time you deploy. How can you speed up the deployment process with minimal impact?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>

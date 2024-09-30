@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 37587305, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have a 25 GB file that you're trying to upload to S3 but you're getting errors. What is a possible solution for this?</p>", "relatedLectureIds": "", "feedbacks": ["The file size limit on S3 is 5 TB.", "", "Multi-Part Upload is recommended as soon as the file is over 100 MB.", ""], "answers": ["<p>The file size limit on S3 is 5 GB</p>", "<p>Update your bucket policy to allow the larger file</p>", "<p>Use Multi-Part upload when uploading files larger than 5GB</p>", "<p>Encrypt the file</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You have a 25 GB file that you're trying to upload to S3 but you're getting errors. What is a possible solution for this?", "related_lectures": []}, {"_class": "assessment", "id": 37587307, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You're getting errors while trying to create a new S3 bucket named <strong>\"dev\"</strong>. You're using a new AWS Account with no S3 buckets created before. What is a possible cause for this?</p>", "relatedLectureIds": "", "feedbacks": ["", ""], "answers": ["<p>You're missing IAM permissions to create an S3 bucket</p>", "<p>S3 bucket names must be globally unique and \"<strong>dev\"</strong> is already taken</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You're getting errors while trying to create a new S3 bucket named \"dev\". You're using a new AWS Account with no S3 buckets created before. What is a possible cause for this?", "related_lectures": []}, {"_class": "assessment", "id": 37587311, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have enabled versioning in your S3 bucket which already contains a lot of files. Which version will the existing files have?</p>", "relatedLectureIds": "", "answers": ["<p>1</p>", "<p>0</p>", "<p>-1</p>", "<p>null</p>"], "feedbacks": ["", "", "", ""]}, "correct_response": ["d"], "section": "", "question_plain": "You have enabled versioning in your S3 bucket which already contains a lot of files. Which version will the existing files have?", "related_lectures": []}, {"_class": "assessment", "id": 37587329, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "question": "<p>You have updated an S3 bucket policy to allow IAM users to read/write files in the S3 bucket, but one of the users complain that he can't perform a <code>PutObject</code> API call. What is a possible cause for this?</p>", "feedbacks": ["", "Even if the user doesn't have permissions, in the question the S3 bucket is explicitly allowing the user and that's enough from a permission's perspective", "Explicit DENY in an IAM Policy will take precedence over an S3 bucket policy.", ""], "answers": ["<p>The S3 bucket policy must be wrong</p>", "<p>The user is lacking permissions</p>", "<p>The IAM user must have an explicit DENY in the attached IAM Policy</p>", "<p>You need to contact AWS Support to lift this limit</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You have updated an S3 bucket policy to allow IAM users to read/write files in the S3 bucket, but one of the users complain that he can't perform a PutObject API call. What is a possible cause for this?", "related_lectures": []}, {"_class": "assessment", "id": 52132008, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You want the content of an S3 bucket to be fully available in different AWS Regions. That will help your team perform data analysis at the lowest latency and cost possible. What S3 feature should you use?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon CloudFront caches your data in different Edge Locations across the world, but it won't copy the content of your S3 bucket to a different AWS Region.", "S3 Versioning allows you to keep different versions of a file in case of overwrites.", "", "S3 Replication allows you to replicate data from an S3 bucket to another in the same/different AWS Region."], "answers": ["<p>Amazon CloudFront Distributions</p>", "<p>S3 Versioning</p>", "<p>S3 Static Website Hosting</p>", "<p>S3 Replication</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "You want the content of an S3 bucket to be fully available in different AWS Regions. That will help your team perform data analysis at the lowest latency and cost possible. What S3 feature should you use?", "related_lectures": []}, {"_class": "assessment", "id": 52132012, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have 3 S3 buckets. One source bucket A, and two destination buckets B and C in different AWS Regions. You want to replicate objects from bucket A to both bucket B and C. How would you achieve this?</p>", "relatedLectureIds": "", "feedbacks": ["", "S3 Replication doesn't support \"chaining\" of replication.", "S3 Replication doesn't support \"chaining\" of replication."], "answers": ["<p>Configure replication from bucket A to bucket B, then from bucket A to bucket C</p>", "<p>Configure replication from bucket A to bucket B, then from bucket B to bucket C</p>", "<p>Configure replication from bucket A to bucket C, then from bucket C to bucket B</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "You have 3 S3 buckets. One source bucket A, and two destination buckets B and C in different AWS Regions. You want to replicate objects from bucket A to both bucket B and C. How would you achieve this?", "related_lectures": []}, {"_class": "assessment", "id": 52132016, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which of the following is <strong>NOT</strong> a Glacier Deep Archive retrieval mode?</p>", "relatedLectureIds": "", "feedbacks": ["", "", ""], "answers": ["<p>Expedited (1 - 5 minutes)</p>", "<p>Standard (12 hours)</p>", "<p>Bulk (48 hours)</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "Which of the following is NOT a Glacier Deep Archive retrieval mode?", "related_lectures": []}, {"_class": "assessment", "id": 52132024, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which of the following is <strong>NOT</strong> a Glacier Flexible retrieval mode?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Instant (10 seconds)</p>", "<p>Expedited (1 - 5 minutes)</p>", "<p>Standard (3 - 5 hours)</p>", "<p>Bulk (5 - 12 hours)</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "Which of the following is NOT a Glacier Flexible retrieval mode?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>
