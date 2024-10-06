@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 52045240, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Your client wants to make sure that file encryption is happening in S3, but he wants to fully manage the encryption keys and never store them in AWS. You recommend him to use ............................</p>", "relatedLectureIds": "", "feedbacks": ["With SSE-S3, the encryption happens in AWS and you the encryption keys managed by AWS. Encryption keys stored in AWS.", "With SSE-KMS, the encryption happens in AWS, and the encryption keys are managed by AWS but you have full control over the rotation policy of the encryption key. Encryption keys stored in AWS.", "With SSE-C, the encryption happens in AWS and you have full control over the encryption keys.", "With Client-Side Encryption, you have to do the encryption yourself and you have full control over the encryption keys."], "answers": ["<p>SSE-S3</p>", "<p>SSE-KMS</p>", "<p>SSE-C</p>", "<p>Client-Side Encryption</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Your client wants to make sure that file encryption is happening in S3, but he wants to fully manage the encryption keys and never store them in AWS. You recommend him to use ............................", "related_lectures": []}, {"_class": "assessment", "id": 52045248, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company you're working for wants their data stored in S3 to be encrypted. They don't mind the encryption keys stored and managed by AWS, but they want to maintain control over the rotation policy of the encryption keys. You recommend them to use ....................</p>", "relatedLectureIds": "", "feedbacks": ["With SSE-S3, the encryption happens in AWS and you don't manage the encryption keys. Encryption keys stored in AWS.", "With SSE-KMS, the encryption happens in AWS, and the encryption keys are managed by AWS but you have full control over the rotation policy of the encryption key. Encryption keys stored in AWS.", "With SSE-C, the encryption happens in AWS and you have full control over the encryption keys. You could define a rotation policy but this is against the question requirements (encryption keys must be stored and managed by AWS).", "With Client-Side Encryption, you have to do the encryption yourself and you have full control over the encryption keys. You could define a rotation policy but this is against the question requirements (encryption keys must be stored and managed by AWS)."], "answers": ["<p>SSE-S3</p>", "<p>SSE-KMS</p>", "<p>SSE-C</p>", "<p>Client-Side Encryption</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "A company you're working for wants their data stored in S3 to be encrypted. They don't mind the encryption keys stored and managed by AWS, but they want to maintain control over the rotation policy of the encryption keys. You recommend them to use ....................", "related_lectures": []}, {"_class": "assessment", "id": 52045260, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Your company does not trust AWS for the encryption process and wants it to happen on the application. You recommend them to use ....................</p>", "relatedLectureIds": "", "feedbacks": ["With SSE-S3, the encryption happens in AWS and you the encryption keys managed by AWS. Encryption keys stored in AWS.", "With SSE-KMS, the encryption happens in AWS, and the encryption keys are managed by AWS but you have full control over the rotation policy of the encryption key. Encryption keys stored in AWS.", "With SSE-C, the encryption happens in AWS and you have full control over the encryption keys.", "With Client-Side Encryption, you have to do the encryption yourself and you have full control over the encryption keys. You perform the encryption yourself and send the encrypted data to AWS. AWS does not know your encryption keys and cannot decrypt your data."], "answers": ["<p>SSE-S3</p>", "<p>SSE-KMS</p>", "<p>SSE-C</p>", "<p>Client-Side Encryption</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "Your company does not trust AWS for the encryption process and wants it to happen on the application. You recommend them to use ....................", "related_lectures": []}, {"_class": "assessment", "id": 52045268, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have a website that loads files from an S3 bucket. When you try the URL of the files directly in your Chrome browser it works, but when a website with a different domain tries to load these files it doesn't. What's the problem?</p>", "relatedLectureIds": "", "feedbacks": ["If the S3 bucket policy is wrong, the files won't load in either case.", "If the IAM policy was wrong, the files won't load in either case.", "Cross-Origin Resource Sharing (CORS) defines a way for client web applications that are loaded in one domain to interact with resources in a different domain. To learn more about CORS, go here: https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html", "If the encryption was wrong, the files won't load in either case."], "answers": ["<p>The Bucket policy is wrong</p>", "<p>The IAM policy is wrong</p>", "<p>CORS is wrong</p>", "<p>Encryption is wrong</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You have a website that loads files from an S3 bucket. When you try the URL of the files directly in your Chrome browser it works, but when a website with a different domain tries to load these files it doesn't. What's the problem?", "related_lectures": []}, {"_class": "assessment", "id": 52131996, "assessment_type": "multiple-choice", "prompt": {"question": "<p>An e-commerce company has its customers and orders data stored in an S3 bucket. The company\u2019s CEO wants to generate a report to show the list of customers and the revenue for each customer. Customer data stored in files on the S3 bucket has sensitive information that we don\u2019t want to expose in the report. How do you recommend the report can be created without exposing sensitive information?</p>", "relatedLectureIds": "", "feedbacks": ["", "", ""], "answers": ["<p>Use S3 Object Lambda to change the objects before they are retrieved by the report generator application</p>", "<p>Create another S3 bucket. Create a lambda function to process each file, remove the sensitive information, and then move them to the new S3 bucket</p>", "<p>Use S3 Object Lock to lock the sensitive information from being fetched by the report generator application</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "An e-commerce company has its customers and orders data stored in an S3 bucket. The company\u2019s CEO wants to generate a report to show the list of customers and the revenue for each customer. Customer data stored in files on the S3 bucket has sensitive information that we don\u2019t want to expose in the report. How do you recommend the report can be created without exposing sensitive information?", "related_lectures": []}, {"_class": "assessment", "id": 52132002, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You suspect that some of your employees try to access files in an S3 bucket that they don't have access to. How can you verify this is indeed the case without them noticing?</p>", "relatedLectureIds": "", "feedbacks": ["S3 Access Logs log all the requests made to S3 buckets and Amazon Athena can then be used to run serverless analytics on top of the log files.", "This will be noticed by employees as they won't be able to access the files.", "A bucket policy would prevent access to the user but they would notice it."], "answers": ["<p>Enable S3 Access Logs and analyze them using Athena</p>", "<p>Restrict their IAM policies and look at CloudTail logs</p>", "<p>Use a bucket policy</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "You suspect that some of your employees try to access files in an S3 bucket that they don't have access to. How can you verify this is indeed the case without them noticing?", "related_lectures": []}, {"_class": "assessment", "id": 52132022, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You are looking to provide temporary URLs to a growing list of federated users to allow them to perform a file upload on your S3 bucket to a specific location. What should you use?</p>", "relatedLectureIds": "", "feedbacks": ["Cross-Origin Resource Sharing (CORS) defines a way for client web applications that are loaded in one domain to interact with resources in a different domain. To learn more about CORS, go here: https://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html", "S3 Pre-Signed URLs are temporary URLs that you generate to grant time-limited access to some actions in your S3 bucket.", "S3 Bucket Policies cannot help in giving temporary access to a dynamic list of federated users."], "answers": ["<p>S3 CORS</p>", "<p>S3 Pre-Signed URL</p>", "<p>S3 Bucket Policies</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You are looking to provide temporary URLs to a growing list of federated users to allow them to perform a file upload on your S3 bucket to a specific location. What should you use?", "related_lectures": []}, {"_class": "assessment", "id": 52132032, "assessment_type": "multiple-choice", "prompt": {"question": "<p>For compliance reasons, your company has a policy mandate that database backups must be retained for 4 years. It shouldn't be possible to erase them. What do you recommend?</p>", "relatedLectureIds": "", "feedbacks": ["", "", ""], "answers": ["<p>Glacier Vaults with Vault Lock Policies</p>", "<p>EFS network drives with restrictive Linux permissions</p>", "<p>S3 with Bucket Policies</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "For compliance reasons, your company has a policy mandate that database backups must be retained for 4 years. It shouldn't be possible to erase them. What do you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 52132036, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You would like all your files in an S3 bucket to be encrypted by default. What is the optimal way of achieving this?</p>", "relatedLectureIds": "", "feedbacks": ["This will force in-flight encryption but not at-rest encryption.", "", ""], "answers": ["<p>Use a bucket policy that forces HTTPS connections</p>", "<p>Do nothing, Amazon S3 automatically encrypt new objects using Server-Side Encryption&nbsp;with S3-Managed Keys (SSE-S3)</p>", "<p>Enable Versioning</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You would like all your files in an S3 bucket to be encrypted by default. What is the optimal way of achieving this?", "related_lectures": []}, {"_class": "assessment", "id": 52132040, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have enabled versioning and want to be extra careful when it comes to deleting files on an S3 bucket. What should you enable to prevent accidental permanent deletions?</p>", "relatedLectureIds": "", "feedbacks": ["The bucket policy would prevent deletes altogether.", "MFA Delete forces users to use MFA codes before deleting S3 objects. It's an extra level of security to prevent accidental deletions.", "", ""], "answers": ["<p>Use a bucket policy</p>", "<p>Enable MFA Delete</p>", "<p>Encrypt the files</p>", "<p>Disable versioning</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You have enabled versioning and want to be extra careful when it comes to deleting files on an S3 bucket. What should you enable to prevent accidental permanent deletions?", "related_lectures": []}, {"_class": "assessment", "id": 52132046, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company has its data and files stored on some S3 buckets. Some of these files need to be kept for a predefined period of time and protected from being overwritten and deletion according to company compliance policy. Which S3 feature helps you in doing this?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>S3 Object Lock - Retention Governance Mode</p>", "<p>S3 Versioning</p>", "<p>S3 Object Lock - Retention Compliance Mode</p>", "<p>S3 Glacier Vault Lock</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "A company has its data and files stored on some S3 buckets. Some of these files need to be kept for a predefined period of time and protected from being overwritten and deletion according to company compliance policy. Which S3 feature helps you in doing this?", "related_lectures": []}, {"_class": "assessment", "id": 52132050, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which of the following S3 Object Lock configuration allows you to prevent an object or its versions from being overwritten or deleted indefinitely and gives you the ability to remove it manually?</p>", "relatedLectureIds": "", "feedbacks": ["", "", ""], "answers": ["<p>Retention Governance Mode</p>", "<p>Retention Compliance Mode</p>", "<p>Legal Hold</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Which of the following S3 Object Lock configuration allows you to prevent an object or its versions from being overwritten or deleted indefinitely and gives you the ability to remove it manually?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>
