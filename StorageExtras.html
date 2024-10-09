@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 37594397, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You need to move hundreds of Terabytes into Amazon S3, then process the data using a fleet of EC2 instances. You have a 1 Gbit/s broadband. You would like to move the data faster and possibly processing it while in transit. What do you recommend?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", "Snowball Edge is the right answer as it comes with computing capabilities and allows you to pre-process the data while it's being moved into Snowball."], "answers": ["<p>Use your network</p>", "<p>Use Snowcone</p>", "<p>Use AWS Data Migration</p>", "<p>Use Snowball Edge</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "You need to move hundreds of Terabytes into Amazon S3, then process the data using a fleet of EC2 instances. You have a 1 Gbit/s broadband. You would like to move the data faster and possibly processing it while in transit. What do you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 37594401, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You want to expose virtually infinite storage for your tape backups. You want to keep the same software you're using and want an iSCSI compatible interface. What do you use?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>AWS Snowball</p>", "<p>AWS Storage Gateway - Tape Gateway</p>", "<p>AWS Storage Gateway - Volume Gateway</p>", "<p>AWS Storage Gateway - S3 File Gateway</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You want to expose virtually infinite storage for your tape backups. You want to keep the same software you're using and want an iSCSI compatible interface. What do you use?", "related_lectures": []}, {"_class": "assessment", "id": 37594405, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Your EC2 Windows Servers need to share some data by having a Network File System mounted on them which respects the Windows security mechanisms and has integration with Microsoft Active Directory. What do you recommend?</p>", "relatedLectureIds": "", "feedbacks": ["", "This is for Linux.", "This is for HPC and Linux.", ""], "answers": ["<p>Amazon FSx for Windows (File Server)</p>", "<p>Amazon EFS</p>", "<p>Amazon FSx for Lustre</p>", "<p>S3 File Gateway</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "Your EC2 Windows Servers need to share some data by having a Network File System mounted on them which respects the Windows security mechanisms and has integration with Microsoft Active Directory. What do you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 37594411, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>AWS Storage Gateway - Volume Gateway</p>", "<p>S3 Multi-part Upload</p>", "<p>AWS Snowball Edge</p>", "<p>AWS Data Migration Service</p>"], "question": "<p>You have hundreds of Terabytes that you want to migrate to AWS S3 as soon as possible. You tried to use your network bandwidth and it will take around 3 weeks to complete the upload process. What is the recommended approach to using in this situation?</p>", "feedbacks": ["", "", "", ""], "relatedLectureIds": ""}, "correct_response": ["c"], "section": "", "question_plain": "You have hundreds of Terabytes that you want to migrate to AWS S3 as soon as possible. You tried to use your network bandwidth and it will take around 3 weeks to complete the upload process. What is the recommended approach to using in this situation?", "related_lectures": []}, {"_class": "assessment", "id": 37594417, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have a large dataset stored in S3 that you want to access from on-premises servers using the NFS or SMB protocol. Also, you want to authenticate access to these files through on-premises Microsoft AD. What would you use?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>AWS Storage Gateway - Volume Gateway</p>", "<p>AWS Storage Gateway - S3 File Gateway</p>", "<p>AWS Storage Gateway - Tape Gateway</p>", "<p>AWS Data Migration Service</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You have a large dataset stored in S3 that you want to access from on-premises servers using the NFS or SMB protocol. Also, you want to authenticate access to these files through on-premises Microsoft AD. What would you use?", "related_lectures": []}, {"_class": "assessment", "id": 37594419, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You are planning to migrate your company's infrastructure from on-premises to AWS Cloud. You have an on-premises Microsoft Windows File Server that you want to migrate. What is the most suitable AWS service you can use?</p>", "relatedLectureIds": "", "feedbacks": ["", "", ""], "answers": ["<p>Amazon FSx for Windows (File Server)</p>", "<p>AWS Storage Gateway - S3 File Gateway</p>", "<p>AWS Managed Microsoft AD</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "You are planning to migrate your company's infrastructure from on-premises to AWS Cloud. You have an on-premises Microsoft Windows File Server that you want to migrate. What is the most suitable AWS service you can use?", "related_lectures": []}, {"_class": "assessment", "id": 37594423, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "question": "<p>You would like to have a distributed POSIX compliant file system that will allow you to maximize the IOPS in order to perform some High-Performance Computing (HPC) and genomics computational research. This file system has to easily scale to millions of IOPS. What do you recommend?</p>", "feedbacks": ["This is not meant for HPC.", "", "This is not POSIX compliant.", "This will give you the IOPS, but it is not a Distributed File System."], "answers": ["<p>EFS with Max. IO enabled</p>", "<p>Amazon FSx for Lustre</p>", "<p>Amazon S3 mounted on the EC2 instances</p>", "<p>EC2 Instance Store</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You would like to have a distributed POSIX compliant file system that will allow you to maximize the IOPS in order to perform some High-Performance Computing (HPC) and genomics computational research. This file system has to easily scale to millions of IOPS. What do you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 37594427, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which deployment option in the FSx file system provides you with long-term storage that's replicated within AZ?</p>", "relatedLectureIds": "", "feedbacks": ["Provides temporary storage where data is not replicated.", "Provides long-term storage where data is replicated within the same AZ. Failed files were replaced within minutes."], "answers": ["<p>Scratch File System</p>", "<p>Persistent File System</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "Which deployment option in the FSx file system provides you with long-term storage that's replicated within AZ?", "related_lectures": []}, {"_class": "assessment", "id": 37594559, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "answers": ["<p>File Transfer Protocol (FTP)</p>", "<p>File Transfer Protocol over SSL (FTPS)</p>", "<p>Transport Layer Security (TLS)</p>", "<p>Secure File Transfer Protocol (SFTP)</p>"], "question": "<p>Which of the following protocols is <strong>NOT</strong> supported by AWS Transfer Family?</p>", "feedbacks": ["", "", "AWS Transfer Family is a managed service for file transfers into and out of S3 or EFS using the FTP protocol, thus TLS is not supported.", ""]}, "correct_response": ["c"], "section": "", "question_plain": "Which of the following protocols is NOT supported by AWS Transfer Family?", "related_lectures": []}, {"_class": "assessment", "id": 51342360, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company uses a lot of files and data which is stored in an FSx for Windows File Server storage on AWS. Those files are currently used by the resources hosted on AWS. There\u2019s a requirement for those files to be accessed on-premises with low latency. Which AWS service can help you achieve this?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>S3 File Gateway</p>", "<p>FSx for Windows File Server On-Premises</p>", "<p>FSx File Gateway</p>", "<p>Volume Gateway</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "A company uses a lot of files and data which is stored in an FSx for Windows File Server storage on AWS. Those files are currently used by the resources hosted on AWS. There\u2019s a requirement for those files to be accessed on-premises with low latency. Which AWS service can help you achieve this?", "related_lectures": []}, {"_class": "assessment", "id": 51342362, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A Solutions Architect is working on planning the migration of a startup company from on-premises to AWS. Currently, their infrastructure consists of many servers and 30 TB of data hosted on a shared NFS storage. He has decided to use Amazon S3 to host the data. Which AWS service can efficiently migrate the data from on-premises to S3?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>AWS Storage Tape Gateway</p>", "<p>Amazon EBS</p>", "<p>AWS Transfer Family</p>", "<p>AWS DataSync</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "A Solutions Architect is working on planning the migration of a startup company from on-premises to AWS. Currently, their infrastructure consists of many servers and 30 TB of data hosted on a shared NFS storage. He has decided to use Amazon S3 to host the data. Which AWS service can efficiently migrate the data from on-premises to S3?", "related_lectures": []}, {"_class": "assessment", "id": 51342364, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which AWS service is best suited to migrate a large amount of data from an S3 bucket to an EFS file system?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>AWS Snowball</p>", "<p>AWS DataSync</p>", "<p>AWS Transfer Family</p>", "<p>AWS Backup</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "Which AWS service is best suited to migrate a large amount of data from an S3 bucket to an EFS file system?", "related_lectures": []}, {"_class": "assessment", "id": 51342366, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A Machine Learning company is working on a set of datasets that are hosted on S3 buckets. The company decided to release those datasets to the public to be useful for others in their research, but they don\u2019t want to configure the S3 bucket to be public. And those datasets should be exposed over the FTP protocol. What can they do to do the requirement efficiently and with the least effort?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Use AWS Transfer Family</p>", "<p>Create an EC2 instance with an FTP server installed then copy the data from S3 to the EC2 instance</p>", "<p>Use AWS Storage Gateway</p>", "<p>Copy the data from S3 to an EFS file system, then expose them over the FTP protocol</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "A Machine Learning company is working on a set of datasets that are hosted on S3 buckets. The company decided to release those datasets to the public to be useful for others in their research, but they don\u2019t want to configure the S3 bucket to be public. And those datasets should be exposed over the FTP protocol. What can they do to do the requirement efficiently and with the least effort?", "related_lectures": []}, {"_class": "assessment", "id": 51342370, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Amazon FSx for NetApp ONTAP is compatible with the following protocols, EXCEPT \u2026\u2026\u2026\u2026\u2026\u2026</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>NFS</p>", "<p>SMB</p>", "<p>FTP</p>", "<p>iSCSI</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Amazon FSx for NetApp ONTAP is compatible with the following protocols, EXCEPT \u2026\u2026\u2026\u2026\u2026\u2026", "related_lectures": []}, {"_class": "assessment", "id": 51342372, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which AWS service is best suited when migrating from an on-premises ZFS file system to AWS?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon FSx for OpenZFS</p>", "<p>Amazon FSx for NetApp ONTAP</p>", "<p>Amazon FSx for Windows File Server</p>", "<p>Amazon FSx for Luster</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "Which AWS service is best suited when migrating from an on-premises ZFS file system to AWS?", "related_lectures": []}, {"_class": "assessment", "id": 51342396, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company is running Amazon S3 File Gateway to host their data on S3 buckets and is able to mount them on-premises using SMB. The data currently is hosted on S3 Standard storage class and there is a requirement to reduce the costs for S3. So, they have decided to migrate some of those data to S3 Glacier. What is the most efficient way they can use to move the data to S3 Glacier automatically?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", "", ""], "answers": ["<p>Create a Lambda function to migrate data to S3 Glacier and periodically trigger it every day using Amazon EventBridge</p>", "<p>Use S3 Batch Operations to loop through S3 files and move them to S3 Glacier every day</p>", "<p>Use S3 Lifecycle Policy</p>", "<p>Use AWS DataSync to replicate data to S3 Glacier every day</p>", "<p>Configure S3 File Gateway to send the data to S3 Glacier directly</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "A company is running Amazon S3 File Gateway to host their data on S3 buckets and is able to mount them on-premises using SMB. The data currently is hosted on S3 Standard storage class and there is a requirement to reduce the costs for S3. So, they have decided to migrate some of those data to S3 Glacier. What is the most efficient way they can use to move the data to S3 Glacier automatically?", "related_lectures": []}, {"_class": "assessment", "id": 54724740, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have on-premises sensitive files and documents that you want to regularly synchronize to AWS to keep another copy. Which AWS service can help you with that?</p>", "relatedLectureIds": "", "feedbacks": ["AWS Database Migration Service (AWS DMS) helps you migrate databases to AWS quickly and securely.", "Amazon EFS provides a simple, serverless, set-and-forget elastic file system for use with AWS and on-premises resources.", "AWS DataSync is an online data transfer service that simplifies, automates, and accelerates moving data between on-premises storage systems and AWS Storage services, as well as between AWS Storage services."], "answers": ["<p>AWS Database Migration Service</p>", "<p>Amazon EFS</p>", "<p>AWS DataSync</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You have on-premises sensitive files and documents that you want to regularly synchronize to AWS to keep another copy. Which AWS service can help you with that?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>

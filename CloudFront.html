@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 37594179, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have a CloudFront Distribution that serves your website hosted on a fleet of EC2 instances behind an Application Load Balancer. All your clients are from the United States, but you found that some malicious requests are coming from other countries. What should you do to only allow users from the US and block other countries?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Use CloudFront Geo Restriction</p>", "<p>Use Origin Access Control</p>", "<p>Set up a security group and attach it to your CloudFront Distribution</p>", "<p>Use a Route 53 Latency record and attach it to CloudFront</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "You have a CloudFront Distribution that serves your website hosted on a fleet of EC2 instances behind an Application Load Balancer. All your clients are from the United States, but you found that some malicious requests are coming from other countries. What should you do to only allow users from the US and block other countries?", "related_lectures": []}, {"_class": "assessment", "id": 37594183, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have a static website hosted on an S3 bucket. You have created a CloudFront Distribution that points to your S3 bucket to better serve your requests and improve performance. After a while, you noticed that users can still access your website directly from the S3 bucket. You want to enforce users to access the website only through CloudFront. How would you achieve that?</p>", "relatedLectureIds": "", "feedbacks": ["", "", ""], "answers": ["<p>Send an email to your clients and tell them to not use the S3 endpoint</p>", "<p>Configure your CloudFront Distribution and create an Origin Access Control (OAC), then update your S3 Bucket Policy to only accept requests from your CloudFront Distribution.</p>", "<p>Use S3 Access Points to redirect clients to CloudFront</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You have a static website hosted on an S3 bucket. You have created a CloudFront Distribution that points to your S3 bucket to better serve your requests and improve performance. After a while, you noticed that users can still access your website directly from the S3 bucket. You want to enforce users to access the website only through CloudFront. How would you achieve that?", "related_lectures": []}, {"_class": "assessment", "id": 37594209, "assessment_type": "multiple-choice", "prompt": {"question": "<p>What does this S3 bucket policy do?</p><p><code>{</code></p><p><code>&nbsp; &nbsp; \"Version\": \"2012-10-17\",</code></p><p><code>&nbsp; &nbsp; \"Id\": \"Mystery policy\",</code></p><p><code>&nbsp; &nbsp; \"Statement\": [{</code></p><p><code>&nbsp; &nbsp; &nbsp; &nbsp; \"Sid\": \"What could it be?\", </code></p><p><code>&nbsp; &nbsp; &nbsp; &nbsp; \"Effect\": \"Allow\",</code></p><p><code>&nbsp; &nbsp; &nbsp; &nbsp; \"Principal\": {</code></p><p><code> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;\"Service\": \"cloudfront.amazonaws.com\"</code></p><p><code>&nbsp; &nbsp; &nbsp; &nbsp; },</code></p><p><code>&nbsp; &nbsp; &nbsp; &nbsp; \"Action\": \"s3:GetObject\",</code></p><p><code>&nbsp; &nbsp; &nbsp; &nbsp; \"Resource\": \"arn:aws:s3:::examplebucket/*\",<br>&nbsp; &nbsp; &nbsp; &nbsp; \"Condition\": {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \"StringEquals\":&nbsp;{<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \"AWS:SourceArn\": \"arn:aws:cloudfront::123456789012:distribution/EDFDVBD6EXAMPLE\"<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }</code></p><p><code>&nbsp; &nbsp; }]</code></p><p><code>}</code> </p>", "relatedLectureIds": "", "feedbacks": ["", "", ""], "answers": ["<p>Forces <code>GetObject</code> request to be encrypted if coming from CloudFront</p>", "<p>Only allows the S3 bucket content to be accessed from your CloudFront Distribution</p>", "<p>Only allows <code>GetObject</code> type of request on the S3 bucket from anybody</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "What does this S3 bucket policy do?{&nbsp; &nbsp; \"Version\": \"2012-10-17\",&nbsp; &nbsp; \"Id\": \"Mystery policy\",&nbsp; &nbsp; \"Statement\": [{&nbsp; &nbsp; &nbsp; &nbsp; \"Sid\": \"What could it be?\", &nbsp; &nbsp; &nbsp; &nbsp; \"Effect\": \"Allow\",&nbsp; &nbsp; &nbsp; &nbsp; \"Principal\": { &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;\"Service\": \"cloudfront.amazonaws.com\"&nbsp; &nbsp; &nbsp; &nbsp; },&nbsp; &nbsp; &nbsp; &nbsp; \"Action\": \"s3:GetObject\",&nbsp; &nbsp; &nbsp; &nbsp; \"Resource\": \"arn:aws:s3:::examplebucket/*\",&nbsp; &nbsp; &nbsp; &nbsp; \"Condition\": {&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \"StringEquals\":&nbsp;{&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \"AWS:SourceArn\": \"arn:aws:cloudfront::123456789012:distribution/EDFDVBD6EXAMPLE\"&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }&nbsp; &nbsp; &nbsp; &nbsp; }&nbsp; &nbsp; }]}", "related_lectures": []}, {"_class": "assessment", "id": 51342356, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A WordPress website is hosted in a set of EC2 instances in an EC2 Auto Scaling Group and fronted by a CloudFront Distribution which is configured to cache the content for 3 days. You have released a new version of the website and want to release it immediately to production without waiting for 3 days for the cached content to be expired. What is the easiest and most efficient way to solve this?</p>", "relatedLectureIds": "", "feedbacks": ["", "", ""], "answers": ["<p>Open a support ticket with AWS Support to remove the CloudFront Cache</p>", "<p>CloudFront Cache Invalidation</p>", "<p>EC2 Cache Invalidation</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "A WordPress website is hosted in a set of EC2 instances in an EC2 Auto Scaling Group and fronted by a CloudFront Distribution which is configured to cache the content for 3 days. You have released a new version of the website and want to release it immediately to production without waiting for 3 days for the cached content to be expired. What is the easiest and most efficient way to solve this?", "related_lectures": []}, {"_class": "assessment", "id": 51344724, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company is deploying a media-sharing website to AWS. They are going to use CloudFront to deliver the content with low latency to their customers where they are located in both US and Europe only. After a while there a huge costs for CloudFront. Which CloudFront feature allows you to decrease costs by targeting only US and Europe?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>CloudFront Cache Invalidation</p>", "<p>CloudFront Price Classes</p>", "<p>CloudFront Cache Behavior</p>", "<p>Origin Access Control</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "A company is deploying a media-sharing website to AWS. They are going to use CloudFront to deliver the content with low latency to their customers where they are located in both US and Europe only. After a while there a huge costs for CloudFront. Which CloudFront feature allows you to decrease costs by targeting only US and Europe?", "related_lectures": []}, {"_class": "assessment", "id": 51345508, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company is migrating a web application to AWS Cloud and they are going to use a set of EC2 instances in an EC2 Auto Scaling Group. The web application is made of multiple components so they will need a host-based routing feature to route to specific web application components. This web application is used by many customers and therefore the web application must have a static IP address so it can be whitelisted by the customers\u2019 firewalls. As the customers are distributed around the world, the web application must also provide low latency to all customers. Which AWS service can help you to assign a static IP address and provide low latency across the globe?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>AWS Global Accelerator + Application Load Balancer</p>", "<p>Amazon CloudFront</p>", "<p>Network Load Balancer</p>", "<p>Application Load Balancer</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "A company is migrating a web application to AWS Cloud and they are going to use a set of EC2 instances in an EC2 Auto Scaling Group. The web application is made of multiple components so they will need a host-based routing feature to route to specific web application components. This web application is used by many customers and therefore the web application must have a static IP address so it can be whitelisted by the customers\u2019 firewalls. As the customers are distributed around the world, the web application must also provide low latency to all customers. Which AWS service can help you to assign a static IP address and provide low latency across the globe?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>
