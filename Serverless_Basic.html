@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 37595419, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "feedbacks": ["The maximum timeout you can configure in Lambda is 15 minutes.", "This may speed up the function processing time, but it wouldn't reduce execution time below 15 minutes.", "Lambda's maximum execution time is 15 minutes. You can run your code somewhere else such as an EC2 instance or use Amazon ECS."], "question": "<p>You have created a Lambda function that typically will take around 1 hour to process some data. The code works fine when you run it locally on your machine, but when you invoke the Lambda function it fails with a <strong>\"timeout\"</strong> error after 3 seconds. What should you do?</p>", "answers": ["<p>Configure your Lambda's timeout to 25 minutes</p>", "<p>Configure your Lambda's memory to 10 GB</p>", "<p>Run your code somewhere else (e.g., EC2 instance)</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You have created a Lambda function that typically will take around 1 hour to process some data. The code works fine when you run it locally on your machine, but when you invoke the Lambda function it fails with a \"timeout\" error after 3 seconds. What should you do?", "related_lectures": []}, {"_class": "assessment", "id": 37595493, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Before you create a DynamoDB table, you need to provision the EC2 instance the DynamoDB table will be running on.</p>", "answers": ["<p>True</p>", "<p>False</p>"], "relatedLectureIds": "", "feedbacks": ["", "DynamoDB is serverless with no servers to provision, patch, or manage and no software to install, maintain or operate. It automatically scales tables up and down to adjust for capacity and maintain performance. It provides both provisioned (specify RCU &amp; WCU) and on-demand (pay for what you use) capacity modes."]}, "correct_response": ["b"], "section": "", "question_plain": "Before you create a DynamoDB table, you need to provision the EC2 instance the DynamoDB table will be running on.", "related_lectures": []}, {"_class": "assessment", "id": 37595559, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "question": "<p>You have provisioned a DynamoDB table with 10 RCUs and 10 WCUs. A month later you want to increase the RCU to handle more read traffic. What should you do?</p>", "answers": ["<p>Increase RCU and keep WCU the same</p>", "<p>You need to increase both RCU and WCU</p>", "<p>Increase RCU and decrease WCU</p>"], "feedbacks": ["RCU and WCU are decoupled, so you can increase/decrease each value separately.", "", ""]}, "correct_response": ["a"], "section": "", "question_plain": "You have provisioned a DynamoDB table with 10 RCUs and 10 WCUs. A month later you want to increase the RCU to handle more read traffic. What should you do?", "related_lectures": []}, {"_class": "assessment", "id": 37595689, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["This is not a good solution to solve the Hot Key problem and it will cost you a lot of money.", "DynamoDB Accelerator (DAX) is a fully managed, highly available, in-memory cache for DynamoDB that delivers up to 10x performance improvement. It caches the most frequently used data, thus offloading the heavy reads on hot keys off your DynamoDB table, hence preventing the \"ProvisionedThroughputExceededException\" exception. ", "This requires too much effort and it might not deliver the required performance."], "question": "<p>You have an e-commerce website where you are using DynamoDB as your database. You are about to enter the Christmas sale and you have a few items which are very popular and you expect that they will be read often. Unfortunately, last year due to the huge traffic you had the <code><strong>ProvisionedThroughputExceededException</strong></code> exception. What would you do to prevent this error from happening again?</p>", "answers": ["<p>Increase the RCU to a very high value</p>", "<p>Create a DAX Cluster</p>", "<p>Migrate the database away from DynamoDB for the time of the sale</p>"], "relatedLectureIds": ""}, "correct_response": ["b"], "section": "", "question_plain": "You have an e-commerce website where you are using DynamoDB as your database. You are about to enter the Christmas sale and you have a few items which are very popular and you expect that they will be read often. Unfortunately, last year due to the huge traffic you had the ProvisionedThroughputExceededException exception. What would you do to prevent this error from happening again?", "related_lectures": []}, {"_class": "assessment", "id": 37595695, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>Schedule a Lambda function to run every minute using CloudWatch Events, scan the entire table looking for new users</p>", "<p>Enable SNS and DynamoDB integration</p>", "<p>Enable DynamoDB Streams and configure it to invoke a Lambda function to send emails</p>"], "relatedLectureIds": "", "question": "<p>You have developed a mobile application that uses DynamoDB as its datastore. You want to automate sending welcome emails to new users after they sign up. What is the most efficient way to achieve this?</p>", "feedbacks": ["This would work but it wouldn't be a scalable, cheap, or efficient solution.", "There's no such feature.", "DynamoDB Streams allows you to capture a time-ordered sequence of item-level modifications in a DynamoDB table. It's integrated with AWS Lambda so that you create triggers that automatically respond to events in real-time."]}, "correct_response": ["c"], "section": "", "question_plain": "You have developed a mobile application that uses DynamoDB as its datastore. You want to automate sending welcome emails to new users after they sign up. What is the most efficient way to achieve this?", "related_lectures": []}, {"_class": "assessment", "id": 37595707, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "answers": ["<p>EC2 Instance</p>", "<p>Elastic Load Balancing</p>", "<p>AWS Lambda</p>"], "question": "<p>To create a serverless API, you should integrate Amazon API Gateway with ......................</p>", "feedbacks": ["EC2 instances are not serverless.", "An ELB does not help create an API on its own.", ""]}, "correct_response": ["c"], "section": "", "question_plain": "To create a serverless API, you should integrate Amazon API Gateway with ......................", "related_lectures": []}, {"_class": "assessment", "id": 37602699, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>False</p>", "<p>True</p>"], "question": "<p>When you are using an Edge-Optimized API Gateway, your API Gateway lives in CloudFront Edge Locations across all AWS Regions.</p>", "feedbacks": ["An Edge-Optimized API Gateway is best for geographically distributed clients. API requests are routed to the nearest CloudFront Edge Location which improves latency. The API Gateway still lives in one AWS Region.", ""], "relatedLectureIds": ""}, "correct_response": ["a"], "section": "", "question_plain": "When you are using an Edge-Optimized API Gateway, your API Gateway lives in CloudFront Edge Locations across all AWS Regions.", "related_lectures": []}, {"_class": "assessment", "id": 37602751, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "feedbacks": ["", "", "", "This will work, but it would be extremely expensive as On-Demand Capacity Mode is much more expensive than Provisioned Capacity Mode. As we know production has a smooth sustained curve, Provisioned Capacity Mode with Auto Scaling enabled would be perfect."], "question": "<p>You are running an application in production that is leveraging DynamoDB as its datastore and is experiencing smooth sustained usage. There is a need to make the application run in development mode as well, where it will experience the unpredictable volume of requests. What is the most cost-effective solution that you recommend?</p>", "answers": ["<p>Use Provisioned Capacity Mode with Auto Scaling enabled for both development and production</p>", "<p>Use Provisioned Capacity Mode with Auto Scaling enabled for production and use On-Demand Capacity Mode for development</p>", "<p>Use Provisioned Capacity Mode with Auto Scaling enabled for development and use On-Demand Capacity Mode for production</p>", "<p>Use On-Demand Capacity Mode for both development and production</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You are running an application in production that is leveraging DynamoDB as its datastore and is experiencing smooth sustained usage. There is a need to make the application run in development mode as well, where it will experience the unpredictable volume of requests. What is the most cost-effective solution that you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 37602757, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have an application that is served globally using CloudFront Distribution. You want to authenticate users at the CloudFront Edge Locations instead of authentication requests go all the way to your origins. What should you use to satisfy this requirement?</p>", "feedbacks": ["Lambda@Edge is a feature of CloudFront that lets you run code closer to your users, which improves performance and reduces latency.", "API Gateway is a fully managed service that makes it easy to create, publish, maintain, monitor, and secure APIs at any scale. It can't be used to run code globally on CloudFront Edge Locations.", "", "AWS Global Accelerator allows you to improve the performance of your users' traffic by up to 60% using AWS global network infrastructure. It can't be used to run code globally on CloudFront Edge Locations."], "relatedLectureIds": "", "answers": ["<p>Lambda@Edge</p>", "<p>API Gateway</p>", "<p>DynamoDB</p>", "<p>AWS Global Accelerator</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "You have an application that is served globally using CloudFront Distribution. You want to authenticate users at the CloudFront Edge Locations instead of authentication requests go all the way to your origins. What should you use to satisfy this requirement?", "related_lectures": []}, {"_class": "assessment", "id": 37602763, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["", "", "", ""], "question": "<p>The maximum size of an item in a DynamoDB table is ...................</p>", "relatedLectureIds": "", "answers": ["<p>1&nbsp;MB</p>", "<p>500 KB</p>", "<p>400 KB</p>", "<p>400 MB</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "The maximum size of an item in a DynamoDB table is ...................", "related_lectures": []}, {"_class": "assessment", "id": 51342424, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which AWS service allows you to build Serverless workflows using AWS services (e.g., Lambda) and supports human approval?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>AWS Lambda</p>", "<p>Amazon ECS</p>", "<p>AWS Step Functions</p>", "<p>AWS Storage Gateway</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Which AWS service allows you to build Serverless workflows using AWS services (e.g., Lambda) and supports human approval?", "related_lectures": []}, {"_class": "assessment", "id": 51342430, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company has a serverless application on AWS which consists of Lambda, DynamoDB, and Step Functions. In the last month, there are an increase in the number of requests against the application which results in an increase in DynamoDB costs, and requests started to be throttled. After further investigation, it shows that the majority of requests are read requests against some queries in the DynamoDB table. What do you recommend to prevent throttles and reduce costs efficiently?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Use an EC2 instance with Redis installed and place it between the Lambda function and the DynamoDB table</p>", "<p>Migrate from DynamoDB to Aurora and use ElastiCache to cache the most requested read data</p>", "<p>Migrate from DynamoDB to S3 and use CloudFront to cache the most requested read data</p>", "<p>Use DynamoDB Accelerator (DAX) to cache the most requested read data</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "A company has a serverless application on AWS which consists of Lambda, DynamoDB, and Step Functions. In the last month, there are an increase in the number of requests against the application which results in an increase in DynamoDB costs, and requests started to be throttled. After further investigation, it shows that the majority of requests are read requests against some queries in the DynamoDB table. What do you recommend to prevent throttles and reduce costs efficiently?", "related_lectures": []}, {"_class": "assessment", "id": 51342432, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You are a DevOps engineer in a football company that has a website that is backed by a DynamoDB table. The table stores viewers\u2019 feedback for football matches. You have been tasked to work with the analytics team to generate reports on the viewers\u2019 feedback. The analytics team wants the data in DynamoDB in <code>json</code> format and hosted in an S3 bucket to start working on it and create the reports. What is the best and most cost-effective way to convert DynamoDB data to <code>json</code> files?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Select DynamoDB table then select Export to S3</p>", "<p>Create a Lambda function to read DynamoDB data, convert them to <code>json</code> files, then store the files in S3 bucket</p>", "<p>Use AWS Transfer Family</p>", "<p>Use AWS DataSync</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "You are a DevOps engineer in a football company that has a website that is backed by a DynamoDB table. The table stores viewers\u2019 feedback for football matches. You have been tasked to work with the analytics team to generate reports on the viewers\u2019 feedback. The analytics team wants the data in DynamoDB in json format and hosted in an S3 bucket to start working on it and create the reports. What is the best and most cost-effective way to convert DynamoDB data to json files?", "related_lectures": []}, {"_class": "assessment", "id": 51342440, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A website is currently in the development process and it is going to be hosted on AWS. There is a requirement to store user sessions for users logged in to the website with an automatic expiry and deletion of expired user sessions. Which of the following AWS services are best suited for this use case?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Store users\u2019 sessions in an S3 bucket and enable S3 Lifecycle Policy</p>", "<p>Store users\u2019 sessions locally in an EC2 instance</p>", "<p>Store users\u2019 sessions in a DynamoDB table and enable TTL</p>", "<p>Store users\u2019 sessions in an EFS file system</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "A website is currently in the development process and it is going to be hosted on AWS. There is a requirement to store user sessions for users logged in to the website with an automatic expiry and deletion of expired user sessions. Which of the following AWS services are best suited for this use case?", "related_lectures": []}, {"_class": "assessment", "id": 56336206, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have a mobile application and would like to give your users access to their own personal space in the S3 bucket. How do you achieve that?</p>", "relatedLectureIds": "", "feedbacks": ["This does not scale well, we cannot create an IAM user per mobile application user.", "Amazon Cognito can be used to federate mobile user accounts and provide them with their own IAM permissions, so they can be able to access their own personal space in the S3 bucket.", "SAML Identity Federation is used to integrate an Identity Provider service such as Microsoft Active Directory with AWS. It does not work for mobile applications.", "Never make an S3 bucket public to your mobile application users. This would result in data leaks! Read horror stories here: https://businessinsights.bitdefender.com/worst-amazon-breaches"], "answers": ["<p>Generate IAM user credentials for each of your application's users</p>", "<p>Use Amazon Cognito Identity Federation</p>", "<p>Use SAML Identity Federation</p>", "<p>Use a Bucket Policy to make your bucket public</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You have a mobile application and would like to give your users access to their own personal space in the S3 bucket. How do you achieve that?", "related_lectures": []}, {"_class": "assessment", "id": 56336218, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You are developing a new web and mobile application that will be hosted on AWS and currently, you are working on developing the login and signup page. The application backend is serverless and you are using Lambda, DynamoDB, and API Gateway. Which of the following is the best and easiest approach to configure the authentication for your backend?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Store users\u2019 credentials in a DynamoDB table encrypted using KMS</p>", "<p>Store users\u2019 credentials in an S3 bucket encrypted using KMS</p>", "<p>Use Cognito User Pools</p>", "<p>Store users\u2019 credentials in AWS Secrets Manager</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You are developing a new web and mobile application that will be hosted on AWS and currently, you are working on developing the login and signup page. The application backend is serverless and you are using Lambda, DynamoDB, and API Gateway. Which of the following is the best and easiest approach to configure the authentication for your backend?", "related_lectures": []}, {"_class": "assessment", "id": 56336248, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You are running a mobile application where you want each registered user to upload/download images to/from his own folder in the S3 bucket. Also, you want to give your users to sign-up and sign in using their social media accounts (e.g., Facebook). Which AWS service should you choose?</p>", "relatedLectureIds": "", "feedbacks": ["AWS IAM enables you to manage access to AWS services and resources securely. It allows you to create and manage AWS users and groups, and use permissions to allow and deny their access to AWS resources. IAM can not be used to federate mobile users.", "AWS IAM Identity Center makes it easy to centrally manage SSO access to all of your AWS accounts and cloud applications. It helps you manage SSO access and user permissions across all your AWS accounts in AWS Organizations. It also helps when you manage access and permissions to commonly used 3rd party software as a service (SaaS) applications, AWS SSO-integrated applications as well as custom applications that support Security Assertion Markup Language (SAML) 2.0.  AWS SSO also includes built-in SAML integrations to many business applications, such as Salesforce, Box, and Office 365.", "Amazon Cognito lets you add user sign-up, sign-in, and access control to your web and mobile apps quickly and easily. Amazon Cognito scales to millions of users and supports sign-in with social identity providers, such as Apple, Facebook, Google, and Amazon, and enterprise identity providers via SAML 2.0 and OpenID Connect.", "Amazon CloudFront is a fast content delivery network (CDN) service that securely delivers data, videos, applications, and APIs to customers globally with low latency, high transfer speeds. Amazon CloudFront does not federate mobile users or generate security credentials."], "answers": ["<p>AWS Identity and Access Management (IAM)</p>", "<p>AWS IAM&nbsp;Identity Center</p>", "<p>Amazon Cognito</p>", "<p>Amazon CloudFront</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You are running a mobile application where you want each registered user to upload/download images to/from his own folder in the S3 bucket. Also, you want to give your users to sign-up and sign in using their social media accounts (e.g., Facebook). Which AWS service should you choose?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>
