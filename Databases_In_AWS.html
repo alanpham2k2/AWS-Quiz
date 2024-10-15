@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 37602929, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which database helps you store relational datasets, with SQL language compatibility and the capability of processing transactions such as insert, update, and delete?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "Amazon DynamoDB is a key-value, document, NoSQL database. It does not have SQL and does not store the data in a relational format, but can be used for transactional processing.", "Amazon ElastiCache is a caching technology and it doesn't have SQL capabilities."], "answers": ["<p>Amazon DocumentDB</p>", "<p>Amazon RDS</p>", "<p>Amazon DynamoDB</p>", "<p>Amazon ElastiCache</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "Which database helps you store relational datasets, with SQL language compatibility and the capability of processing transactions such as insert, update, and delete?", "related_lectures": []}, {"_class": "assessment", "id": 37602995, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which AWS service provides you with caching capability that is compatible with Redis API?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon RDS does not have caching capability and it is based on JDBC and not compatible with Redis API.", "Amazon DynamoDB can be used as a substitute for Redis but it does not support Redis API.", "Amazon OpenSearch helps you in indexing and searching through your data. It leverages HTTP for client interactions.", "Amazon ElastiCache is a fully managed in-memory data store, compatible with Redis or Memcached."], "answers": ["<p>Amazon RDS</p>", "<p>Amazon DynamoDB</p>", "<p>Amazon OpenSearch</p>", "<p>Amazon ElastiCache</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "Which AWS service provides you with caching capability that is compatible with Redis API?", "related_lectures": []}, {"_class": "assessment", "id": 37603003, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You want to migrate an on-premises MongoDB NoSQL database to AWS. You don't want to manage any database servers, so you want to use a managed NoSQL database, preferably Serverless, that provides you with high availability, durability, and reliability, and the capability to take your database global. Which database should you choose?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon RDS is a relational, SQL-based database.", "Amazon DynamoDB is a key-value, document, NoSQL database.", "", "Amazon Aurora is a relational, SQL-based database."], "answers": ["<p>Amazon RDS</p>", "<p>Amazon DynamoDB</p>", "<p>Amazon Timestream</p>", "<p>Amazon Aurora</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You want to migrate an on-premises MongoDB NoSQL database to AWS. You don't want to manage any database servers, so you want to use a managed NoSQL database, preferably Serverless, that provides you with high availability, durability, and reliability, and the capability to take your database global. Which database should you choose?", "related_lectures": []}, {"_class": "assessment", "id": 37603015, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You are looking to perform Online Transaction Processing (OLTP). You would like to use a database that has built-in auto-scaling capabilities and provides you with the maximum number of replicas for its underlying storage. What AWS service do you recommend?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon ElastiCache is an in-memory data store, provides you with caching capabilities. It is compatible with Redis and Memcached. It does not support OLTP.", "", "Amazon Aurora is a MySQL and PostgreSQL-compatible relational database. It features a distributed, fault-tolerant, self-healing storage system that auto-scales up to 128TB per database instance. It delivers high performance and availability with up to 15 low-latency read replicas, point-in-time recovery, continuous backup to Amazon S3, and replication across 3 AZs.", "Amazon RDS does not have built-in auto-scaling and data replication capabilities. You need to create RDS Read Replicas and enable Multi-AZ."], "answers": ["<p>Amazon ElastiCache</p>", "<p>Amazon Neptune</p>", "<p>Amazon Aurora</p>", "<p>Amazon RDS</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You are looking to perform Online Transaction Processing (OLTP). You would like to use a database that has built-in auto-scaling capabilities and provides you with the maximum number of replicas for its underlying storage. What AWS service do you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 37603023, "assessment_type": "multiple-choice", "prompt": {"question": "<p>As a Solutions Architect, a startup company asked you for help as they are working on an architecture for a social media website where users can be friends with each other, and like each other's posts. The company plan on performing some complicated queries such as <em>\"What are the number of likes on the posts that have been posted by the friends of Mike?\"</em>. Which database do you recommend?</p>", "relatedLectureIds": "", "feedbacks": ["This would work, but a graph database is better suited.", "", "Amazon Neptune is a fast, reliable, fully-managed graph database service that makes it easy to build and run applications that work with highly connected datasets.", "This would work, but a graph database is better suited."], "answers": ["<p>Amazon RDS</p>", "<p>Amazon QLDB</p>", "<p>Amazon Neptune</p>", "<p>Amazon OpenSearch</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "As a Solutions Architect, a startup company asked you for help as they are working on an architecture for a social media website where users can be friends with each other, and like each other's posts. The company plan on performing some complicated queries such as \"What are the number of likes on the posts that have been posted by the friends of Mike?\". Which database do you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 37603031, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have a set of files, 100MB each, that you want to store in a reliable and durable key-value store. Which AWS service do you recommend?</p>", "relatedLectureIds": "", "feedbacks": ["", "Amazon S3 is indeed a key-value store! (where the key is the full path of the object in the bucket)", "Amazon DynamoDB can not be used to store big objects. The maximum item size in DynamoDB is 400KB.", "Amazon ElastiCache is a fully managed in-memory data store, compatible with Redis or Memcached. It can not be used to store big objects, in addition to it is not durable."], "answers": ["<p>Amazon Aurora</p>", "<p>Amazon S3</p>", "<p>Amazon DynamoDB</p>", "<p>Amazon ElastiCache</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You have a set of files, 100MB each, that you want to store in a reliable and durable key-value store. Which AWS service do you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 51342446, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company has an on-premises website that uses ReactJS as its frontend, NodeJS as its backend, and MongoDB for the database. There are some issues with the self-hosted MongoDB database as there is a lot of maintenance required and they don\u2019t have and can\u2019t afford the resources or experience to handle those issues. So, a decision was made to migrate the website to AWS. They have decided to host the frontend ReactJS application in an S3 bucket and the NodeJS backend on a set of EC2 instances. Which AWS service can they use to migrate the MongoDB database that provides them with high scalability and availability without making any code changes?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon ElastiCache</p>", "<p>Amazon DocumentDB</p>", "<p>Amazon RDS for MongoDB</p>", "<p>Amazon Neptune</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "A company has an on-premises website that uses ReactJS as its frontend, NodeJS as its backend, and MongoDB for the database. There are some issues with the self-hosted MongoDB database as there is a lot of maintenance required and they don\u2019t have and can\u2019t afford the resources or experience to handle those issues. So, a decision was made to migrate the website to AWS. They have decided to host the frontend ReactJS application in an S3 bucket and the NodeJS backend on a set of EC2 instances. Which AWS service can they use to migrate the MongoDB database that provides them with high scalability and availability without making any code changes?", "related_lectures": []}, {"_class": "assessment", "id": 51342448, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company using a self-hosted on-premises Apache Cassandra database which they want to migrate to AWS. Which AWS service can they use which provides them with a fully managed, highly available, and scalable Apache Cassandra database?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon DocumentDB</p>", "<p>Amazon DynamoDB</p>", "<p>Amazon Timestream</p>", "<p>Amazon Keyspaces</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "A company using a self-hosted on-premises Apache Cassandra database which they want to migrate to AWS. Which AWS service can they use which provides them with a fully managed, highly available, and scalable Apache Cassandra database?", "related_lectures": []}, {"_class": "assessment", "id": 51342454, "assessment_type": "multiple-choice", "prompt": {"question": "<p>An online payment company is using AWS to host its infrastructure. Due to the application\u2019s nature, they have a strict requirement to store an accurate record of financial transactions such as credit and debit transactions. Those transactions must be stored in secured, immutable, encrypted storage which can be cryptographically verified. Which AWS service is best suited for this use case?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon DocumentDB</p>", "<p>Amazon Aurora</p>", "<p>Amazon QLDB</p>", "<p>Amazon Neptune</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "An online payment company is using AWS to host its infrastructure. Due to the application\u2019s nature, they have a strict requirement to store an accurate record of financial transactions such as credit and debit transactions. Those transactions must be stored in secured, immutable, encrypted storage which can be cryptographically verified. Which AWS service is best suited for this use case?", "related_lectures": []}, {"_class": "assessment", "id": 51342460, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A startup is working on developing a new project to reduce forest fires due to climate change. The startup is developing sensors that will be spread across the entire forest to make some readings such as temperature, humidity, and pressures which will help detect the forest fires before it happens. They are going to have thousands of sensors that are going to store a lot of readings each second. There is a requirement to store those readings and do fast analytics so they can predict if there is a fire. Which AWS service can they use to store those readings?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon Timestream</p>", "<p>Amazon Neptune</p>", "<p>Amazon S3</p>", "<p>Amazon ElastiCache</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "A startup is working on developing a new project to reduce forest fires due to climate change. The startup is developing sensors that will be spread across the entire forest to make some readings such as temperature, humidity, and pressures which will help detect the forest fires before it happens. They are going to have thousands of sensors that are going to store a lot of readings each second. There is a requirement to store those readings and do fast analytics so they can predict if there is a fire. Which AWS service can they use to store those readings?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>

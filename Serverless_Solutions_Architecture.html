@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 37602789, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>API Gateway + AWS Lambda</p>", "<p>Application Load Balancer + EC2</p>", "<p>Elastic Container Service (ECS) + Elastic Block Store (EBS)</p>", "<p>Amazon CloudFront + S3</p>"], "relatedLectureIds": "", "question": "<p>A startup company plans to run its application on AWS. As a solutions architect, the company hired you to design and implement a fully Serverless REST API. Which technology stack do you recommend?</p>", "feedbacks": ["This is fully serverless.", "EC2 is not serverless.", "Both ECS and EBS are not serverless.", "This is serverless but it won't help as you want to create an API. This combination allows you to distribute the static part of your application globally."]}, "correct_response": ["a"], "section": "", "question_plain": "A startup company plans to run its application on AWS. As a solutions architect, the company hired you to design and implement a fully Serverless REST API. Which technology stack do you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 37602799, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["You can enable API caching in Amazon API Gateway to cache your endpoint's responses. With caching, you can reduce the number of calls made to your endpoint and also improve the latency of requests to your API. When you enable caching for a stage, API Gateway caches responses from your endpoint for a specified time-to-live (TTL) period, in seconds. API Gateway then responds to the request by looking up the endpoint response from the cache instead of making a request to your endpoint.", "Lambda does not have an out-of-the-box caching feature.", "Amazon DynamoDB Accelerator (DAX) is a fully managed, highly available, in-memory cache for DynamoDB that delivers up to a 10x performance improvement \u2013 from milliseconds to microseconds \u2013 even at millions of requests per second. DAX does all the heavy lifting required to add in-memory acceleration to your DynamoDB tables, without requiring developers to manage cache invalidation, data population, or cluster management."], "question": "<p>The following AWS services have an out of the box caching feature, <strong>EXCEPT</strong> .................</p>", "answers": ["<p>API Gateway</p>", "<p>Lambda</p>", "<p>DynamoDB</p>"], "relatedLectureIds": ""}, "correct_response": ["b"], "section": "", "question_plain": "The following AWS services have an out of the box caching feature, EXCEPT .................", "related_lectures": []}, {"_class": "assessment", "id": 37602821, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "feedbacks": ["S3 CRR enables automatic, asynchronous copying of objects across S3 buckets. This would work but it would be expensive as you'll have multiple copies of data in different S3 buckets around the globe.", "Amazon CloudFront is a fast content delivery network (CDN) service that securely delivers data, videos, applications, and APIs to customers globally with low latency, high transfer speeds. This is a perfect use case for Amazon CloudFront.", "Amazon Route 53 is a highly available and scalable Domain Name System (DNS) service.", "Amazon API Gateway is a fully managed service that makes it easy to create, publish, maintain, monitor, and secure APIs at any scale. You can create REST APIs and WebSocket APIs. It helps you expose dynamic content, not static content from S3."], "question": "<p>You have a lot of static files stored in an S3 bucket that you want to distribute globally to your users. Which AWS service should you use?</p>", "answers": ["<p>S3 Cross-Region Replication</p>", "<p>Amazon CloudFront</p>", "<p>Amazon Route 53</p>", "<p>API Gateway</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You have a lot of static files stored in an S3 bucket that you want to distribute globally to your users. Which AWS service should you use?", "related_lectures": []}, {"_class": "assessment", "id": 37602829, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>DynamoDB Streams</p>", "<p>DynamoDB DAX</p>", "<p>DynamoDB Versioning</p>", "<p>DynamoDB Backups</p>"], "question": "<p>You have created a DynamoDB table in <code>ap-northeast-1</code> and would like to make it available in <code>eu-west-1</code>, so you decided to create a DynamoDB Global Table. What needs to be enabled first before you create a DynamoDB Global Table?</p>", "feedbacks": ["DynamoDB Streams enable DynamoDB to get a changelog and use that changelog to replicate data across replica tables in other AWS Regions.", "Amazon DynamoDB Accelerator (DAX) is a fully managed, highly available, in-memory cache for DynamoDB that delivers up to a 10x performance improvement \u2013 from milliseconds to microseconds \u2013 even at millions of requests per second. DAX does all the heavy lifting required to add in-memory acceleration to your DynamoDB tables, without requiring developers to manage cache invalidation, data population, or cluster management.", "There's no such feature.", "Amazon DynamoDB provides the on-demand backup capability to create full backups of your tables for long-term retention and archival for regulatory compliance needs."], "relatedLectureIds": ""}, "correct_response": ["a"], "section": "", "question_plain": "You have created a DynamoDB table in ap-northeast-1 and would like to make it available in eu-west-1, so you decided to create a DynamoDB Global Table. What needs to be enabled first before you create a DynamoDB Global Table?", "related_lectures": []}, {"_class": "assessment", "id": 37602833, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have configured a Lambda function to run each time an item is added to a DynamoDB table using DynamoDB Streams. The function is meant to insert messages into the SQS queue for further long processing jobs. Each time the Lambda function is invoked, it seems able to read from the DynamoDB Stream but it isn't able to insert the messages into the SQS queue. What do you think the problem is?</p>", "relatedLectureIds": "", "feedbacks": ["AWS Lambda is a perfect fit with SQS.", "", "Security Groups can not point to SQS queues.", "Security Groups can not be attached to SQS queues."], "answers": ["<p>Lambda can't be used to insert messages into the SQS queue, use an EC2 instance instead</p>", "<p>The Lambda Execution IAM Role is missing permissions</p>", "<p>The Lambda security group must allow outbound access to SQS</p>", "<p>The SQS security group must be edited to allow AWS Lambda</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You have configured a Lambda function to run each time an item is added to a DynamoDB table using DynamoDB Streams. The function is meant to insert messages into the SQS queue for further long processing jobs. Each time the Lambda function is invoked, it seems able to read from the DynamoDB Stream but it isn't able to insert the messages into the SQS queue. What do you think the problem is?", "related_lectures": []}, {"_class": "assessment", "id": 37602843, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "answers": ["<p>Amazon S3 + AWS Lambda</p>", "<p>Amazon SNS + Amazon EC2</p>", "<p>Amazon SQS + Amazon EC2</p>", "<p>Amazon SQS + AWS Lambda</p>"], "question": "<p>You would like to create an architecture for a micro-services application whose sole purpose is to encode videos stored in an S3 bucket and store the encoded videos back into an S3 bucket. You would like to make this micro-services application reliable and has the ability to retry upon failures. Each video may take over 25 minutes to be processed. The services used in the architecture should be asynchronous and should have the capability to be stopped for a day and resume the next day from the videos that haven't been encoded yet. Which of the following AWS services would you recommend in this scenario?</p>", "feedbacks": ["When using a Lambda function with S3, the Lambda function would need to be triggered immediately and can't be postponed until tomorrow to be run.", "Amazon SNS won't allow us to retry by putting back a message into a queue in case of EC2 failures.", "Amazon SQS allows you to retain messages for days and process them later, while we can take down our EC2 instances.", "This would work, but it can't be used in this scenario as the maximum execution time for a Lambda function is 15 minutes."]}, "correct_response": ["c"], "section": "", "question_plain": "You would like to create an architecture for a micro-services application whose sole purpose is to encode videos stored in an S3 bucket and store the encoded videos back into an S3 bucket. You would like to make this micro-services application reliable and has the ability to retry upon failures. Each video may take over 25 minutes to be processed. The services used in the architecture should be asynchronous and should have the capability to be stopped for a day and resume the next day from the videos that haven't been encoded yet. Which of the following AWS services would you recommend in this scenario?", "related_lectures": []}, {"_class": "assessment", "id": 37602857, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You are running a photo-sharing website where your images are downloaded from all over the world. Every month you publish a master pack of beautiful mountain images that are over 15 GB in size. The content is currently hosted on an Elastic File System (EFS) file system and distributed by an Application Load Balancer and a set of EC2 instances. Each month, you are experiencing very high traffic which increases the load on your EC2 instances and increases network costs. What do you recommend to reduce EC2 load and network costs without refactoring your website?</p>", "relatedLectureIds": "", "feedbacks": ["This would work, but it will require some kind of application refactoring. And you still may have high network costs.", "This feature does not exist.", "This would include higher costs for EC2 instances, and you still have high network costs.", "Amazon CloudFront is a fast content delivery network (CDN) service that securely delivers data, videos, applications, and APIs to customers globally with low latency, high transfer speeds. Amazon CloudFront can be used in front of an Application Load Balancer."], "answers": ["<p>Hosts the master pack into S3</p>", "<p>Enable Application Load Balancer Caching</p>", "<p>Scale up the EC2 instances</p>", "<p>Create a CloudFront Distribution</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "You are running a photo-sharing website where your images are downloaded from all over the world. Every month you publish a master pack of beautiful mountain images that are over 15 GB in size. The content is currently hosted on an Elastic File System (EFS) file system and distributed by an Application Load Balancer and a set of EC2 instances. Each month, you are experiencing very high traffic which increases the load on your EC2 instances and increases network costs. What do you recommend to reduce EC2 load and network costs without refactoring your website?", "related_lectures": []}, {"_class": "assessment", "id": 37602861, "assessment_type": "multiple-choice", "prompt": {"question": "<p>An AWS service allows you to capture gigabytes of data per second in real-time and deliver these data to multiple consuming applications, with a replay feature.</p>", "relatedLectureIds": "", "feedbacks": ["Amazon Kinesis Data Streams (KDS) is a massively scalable and durable real-time data streaming service. It can continuously capture gigabytes of data per second from hundreds of sources such as website clickstreams, database event streams, financial transactions, social media feeds, IT logs, and location-tracking events.", "Amazon S3 is an object storage service and does not provide replay features.", "Amazon MQ is a managed message broker service for Apache ActiveMQ and RabbitMQ that makes it easy to set up and operate message brokers on AWS. It's a replacement for Amazon SQS in case you need to support other protocols such as MQTT."], "answers": ["<p>Kinesis Data Streams</p>", "<p>Amazon S3</p>", "<p>Amazon MQ</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "An AWS service allows you to capture gigabytes of data per second in real-time and deliver these data to multiple consuming applications, with a replay feature.", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>

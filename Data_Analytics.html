@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 51043470, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You would like to have a database that is efficient at performing analytical queries on large sets of columnar data. You would like to connect to this Data Warehouse using a reporting and dashboard tool such as Amazon QuickSight. Which AWS technology do you recommend?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon RDS</p>", "<p>Amazon S3</p>", "<p>Amazon Redshift</p>", "<p>Amazon Neptune</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You would like to have a database that is efficient at performing analytical queries on large sets of columnar data. You would like to connect to this Data Warehouse using a reporting and dashboard tool such as Amazon QuickSight. Which AWS technology do you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 51043476, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have a lot of log files stored in an S3 bucket that you want to perform a quick analysis, if possible Serverless, to filter the logs and find users that attempted to make an unauthorized action. Which AWS service allows you to do so?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon DynamoDB</p>", "<p>Amazon Redshift</p>", "<p>S3 Glacier</p>", "<p>Amazon Athena</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "You have a lot of log files stored in an S3 bucket that you want to perform a quick analysis, if possible Serverless, to filter the logs and find users that attempted to make an unauthorized action. Which AWS service allows you to do so?", "related_lectures": []}, {"_class": "assessment", "id": 51043480, "assessment_type": "multiple-choice", "prompt": {"question": "<p>As a Solutions Architect, you have been instructed you to prepare a disaster recovery plan for a Redshift cluster. What should you do?</p>", "relatedLectureIds": "", "feedbacks": ["", "", ""], "answers": ["<p>Enable Multi-AZ</p>", "<p>Enable Automated Snapshots, then configure your Redshift cluster to automatically copy snapshots to another AWS&nbsp;region</p>", "<p>Take a snapshot then restore to a Redshift Global cluster</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "As a Solutions Architect, you have been instructed you to prepare a disaster recovery plan for a Redshift cluster. What should you do?", "related_lectures": []}, {"_class": "assessment", "id": 51043484, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which feature in Redshift forces all <strong>COPY</strong> and <strong>UNLOAD</strong> traffic moving between your cluster and data repositories through your VPCs?</p>", "relatedLectureIds": "", "feedbacks": ["", "", ""], "answers": ["<p>Enhanced VPC&nbsp;Routing</p>", "<p>Improved VPC&nbsp;Routing</p>", "<p>Redshift Spectrum</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "Which feature in Redshift forces all COPY and UNLOAD traffic moving between your cluster and data repositories through your VPCs?", "related_lectures": []}, {"_class": "assessment", "id": 51043488, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You are running a gaming website that is using DynamoDB as its data store. Users have been asking for a search feature to find other gamers by name, with partial matches if possible. Which AWS technology do you recommend to implement this feature?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon DynamoDB</p>", "<p>Amazon Redshift</p>", "<p>Amazon OpenSearch Service</p>", "<p>Amazon Neptune</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You are running a gaming website that is using DynamoDB as its data store. Users have been asking for a search feature to find other gamers by name, with partial matches if possible. Which AWS technology do you recommend to implement this feature?", "related_lectures": []}, {"_class": "assessment", "id": 51043490, "assessment_type": "multiple-choice", "prompt": {"question": "<p>An AWS service allows you to create, run, and monitor ETL (extract, transform, and load) jobs in a few clicks.</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>AWS&nbsp;Glue</p>", "<p>Amazon Redshift</p>", "<p>Amazon RDS</p>", "<p>Amazon DynamoDB</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "An AWS service allows you to create, run, and monitor ETL (extract, transform, and load) jobs in a few clicks.", "related_lectures": []}, {"_class": "assessment", "id": 51342874, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company is using AWS to host its public websites and internal applications. Those different websites and applications generate a lot of logs and traces. There is a requirement to centrally store those logs and efficiently search and analyze those logs in real-time for detection of any errors and if there is a threat. Which AWS service can help them efficiently store and analyze logs?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon S3</p>", "<p>Amazon OpenSearch service</p>", "<p>Amazon ElastiCache</p>", "<p>Amazon QLDB</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "A company is using AWS to host its public websites and internal applications. Those different websites and applications generate a lot of logs and traces. There is a requirement to centrally store those logs and efficiently search and analyze those logs in real-time for detection of any errors and if there is a threat. Which AWS service can help them efficiently store and analyze logs?", "related_lectures": []}, {"_class": "assessment", "id": 51343360, "assessment_type": "multiple-choice", "prompt": {"question": "<p>\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026.. makes it easy and cost-effective for data engineers and analysts to run applications built using open source big data frameworks such as Apache Spark, Hive, or Presto without having to operate or manage clusters.</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>AWS Lambda</p>", "<p>Amazon EMR</p>", "<p>Amazon Athena</p>", "<p>Amazon OpenSearch Service</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026.. makes it easy and cost-effective for data engineers and analysts to run applications built using open source big data frameworks such as Apache Spark, Hive, or Presto without having to operate or manage clusters.", "related_lectures": []}, {"_class": "assessment", "id": 51343362, "assessment_type": "multiple-choice", "prompt": {"question": "<p>An e-commerce company has all its historical data such as orders, customers, revenues, and sales for the previous years hosted on a Redshift cluster. There is a requirement to generate some dashboards and reports indicating the revenues from the previous years and the total sales, so it will be easy to define the requirements for the next year. The DevOps team is assigned to find an AWS service that can help define those dashboards and have native integration with Redshift. Which AWS service is best suited?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon OpenSearch Service</p>", "<p>Amazon Athena</p>", "<p>Amazon QuickSight</p>", "<p>Amazon EMR</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "An e-commerce company has all its historical data such as orders, customers, revenues, and sales for the previous years hosted on a Redshift cluster. There is a requirement to generate some dashboards and reports indicating the revenues from the previous years and the total sales, so it will be easy to define the requirements for the next year. The DevOps team is assigned to find an AWS service that can help define those dashboards and have native integration with Redshift. Which AWS service is best suited?", "related_lectures": []}, {"_class": "assessment", "id": 51457396, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which AWS Glue feature allows you to save and track the data that has already been processed during a previous run of a Glue ETL job?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Glue Job Bookmarks</p>", "<p>Glue Elastic Views</p>", "<p>Glue Streaming ETL</p>", "<p>Glue DataBrew</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "Which AWS Glue feature allows you to save and track the data that has already been processed during a previous run of a Glue ETL job?", "related_lectures": []}, {"_class": "assessment", "id": 51457402, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You are a DevOps engineer in a machine learning company which 3 TB of JSON files stored in an S3 bucket. There\u2019s a requirement to do some analytics on those files using Amazon Athena and you have been tasked to find a way to convert those files\u2019 format from JSON to Apache Parquet. Which AWS service is best suited?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>S3 Object Versioning</p>", "<p>Kinesis Data Streams</p>", "<p>Amazon MSK</p>", "<p>AWS Glue</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "You are a DevOps engineer in a machine learning company which 3 TB of JSON files stored in an S3 bucket. There\u2019s a requirement to do some analytics on those files using Amazon Athena and you have been tasked to find a way to convert those files\u2019 format from JSON to Apache Parquet. Which AWS service is best suited?", "related_lectures": []}, {"_class": "assessment", "id": 51457406, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have an on-premises application that is used together with an on-premises Apache Kafka to receive a stream of clickstream events from multiple websites. You have been tasked to migrate this application as soon as possible without any code changes. You decided to host the application on an EC2 instance. What is the best option you recommend to migrate Apache Kafka?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Kinesis Data Streams</p>", "<p>AWS Glue</p>", "<p>Amazon MSK</p>", "<p>Kinesis Data Analytics</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "You have an on-premises application that is used together with an on-premises Apache Kafka to receive a stream of clickstream events from multiple websites. You have been tasked to migrate this application as soon as possible without any code changes. You decided to host the application on an EC2 instance. What is the best option you recommend to migrate Apache Kafka?", "related_lectures": []}, {"_class": "assessment", "id": 51457410, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You have data stored in RDS, S3 buckets and you are using AWS Lake Formation as a data lake to collect, move and catalog data so you can do some analytics. You have a lot of big data and ML engineers in the company and you want to control access to part of the data as it might contain sensitive information. What can you use?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Lake Formation Fine-grained Access Control</p>", "<p>Amazon Cognito</p>", "<p>AWS Shield</p>", "<p>S3 Object Lock</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "You have data stored in RDS, S3 buckets and you are using AWS Lake Formation as a data lake to collect, move and catalog data so you can do some analytics. You have a lot of big data and ML engineers in the company and you want to control access to part of the data as it might contain sensitive information. What can you use?", "related_lectures": []}, {"_class": "assessment", "id": 52178782, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which AWS service is most appropriate when you want to perform real-time analytics on streams of data?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "Use Kinesis Data Analytics with Kinesis Data Streams as the underlying source of data.", ""], "answers": ["<p>Amazon SQS</p>", "<p>Amazon SNS</p>", "<p>Amazon Kinesis Data Analytics</p>", "<p>Amazon Kinesis Data Firehose</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Which AWS service is most appropriate when you want to perform real-time analytics on streams of data?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>

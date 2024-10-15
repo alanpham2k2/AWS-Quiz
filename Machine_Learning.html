@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 47638970, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You should use Amazon Transcribe to turn text into lifelike speech using deep learning.</p>", "relatedLectureIds": "", "feedbacks": ["Amazon Transcribe is an AWS service that makes it easy for customers to convert speech-to-text. Amazon Polly is a service that turns text into lifelike speech.", "Amazon Transcribe is an AWS service that makes it easy for customers to convert speech-to-text. Amazon Polly is a service that turns text into lifelike speech."], "answers": ["<p>True</p>", "<p>False</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "You should use Amazon Transcribe to turn text into lifelike speech using deep learning.", "related_lectures": []}, {"_class": "assessment", "id": 47638976, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company would like to implement a chatbot that will convert speech-to-text and recognize the customers' intentions. What service should it use? </p>", "relatedLectureIds": "", "feedbacks": ["Amazon Transcribe is an AWS service that makes it easy for customers to convert speech-to-text. However, it does not have natural language understanding.", "Amazon Rekognition makes it easy to add image and video analysis to your applications using proven, highly scalable, deep learning technology that requires no machine learning expertise to use.", "Amazon Connect is a self-service, cloud-based contact center service that makes it easy for any business to deliver better customer service at lower cost. It does not provide speech-to-text conversion or natural language understanding.", "Amazon Lex is a service for building conversational interfaces into any application using voice and text. Lex provides the advanced deep learning functionalities of automatic speech recognition (ASR) for converting speech to text, and natural language understanding (NLU) to recognize the intent of the text, to enable you to build applications with highly engaging user experiences and lifelike conversational interactions."], "answers": ["<p>Transcribe</p>", "<p>Rekognition</p>", "<p>Connect</p>", "<p>Lex</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "A company would like to implement a chatbot that will convert speech-to-text and recognize the customers' intentions. What service should it use?", "related_lectures": []}, {"_class": "assessment", "id": 47638982, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which fully managed service can deliver highly accurate forecasts?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon Personalize is a machine learning service that makes it easy for developers to create individualized recommendations for customers using their applications. It is not used to deliver highly accurate forecasts.", "Amazon SageMaker is a fully managed service that provides every developer and data scientist with the ability to build, train, and deploy machine learning (ML) models quickly. It is not used to deliver highly accurate forecasts.", "Amazon Lex is a service for building conversational interfaces into any application using voice and text. It is not used to deliver highly accurate forecasts.", "Amazon Forecast is a fully managed service that uses machine learning to deliver highly accurate forecasts. "], "answers": ["<p>Personalize</p>", "<p>SageMaker</p>", "<p>Lex</p>", "<p>Forecast</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "Which fully managed service can deliver highly accurate forecasts?", "related_lectures": []}, {"_class": "assessment", "id": 47638988, "assessment_type": "multiple-choice", "prompt": {"question": "<p>You would like to find objects, people, text, or scenes in images and videos. What AWS&nbsp;service should you use?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon Rekognition makes it easy to add image and video analysis to your applications using proven, highly scalable, deep learning technology that requires no machine learning expertise to use.", "Amazon Polly is a service that turns text into lifelike speech. It is not used to find objects, people, text, or scenes in images and videos.", "Amazon Kendra is a highly accurate and easy to use enterprise search service that\u2019s powered by machine learning. It is not used to find objects, people, text, or scenes in images and videos.", "Amazon Lex is a service for building conversational interfaces into any application using voice and text. Lex provides the advanced deep learning functionalities of automatic speech recognition (ASR) for converting speech to text, and natural language understanding (NLU) to recognize the intent of the text, to enable you to build applications with highly engaging user experiences and lifelike conversational interactions. It is not used to find objects, people, text, or scenes in images and videos."], "answers": ["<p>Rekognition</p>", "<p>Polly</p>", "<p>Kendra</p>", "<p>Lex</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "You would like to find objects, people, text, or scenes in images and videos. What AWS&nbsp;service should you use?", "related_lectures": []}, {"_class": "assessment", "id": 47638994, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A start-up would like to rapidly create customized user experiences. Which AWS service can help?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon Personalize is a machine learning service that makes it easy for developers to create individualized recommendations for customers using their applications.", "Amazon Kendra is a highly accurate and easy to use enterprise search service that\u2019s powered by machine learning. It is not used to create fast personalized user experiences and recommendations.", "Amazon Connect is an easy-to-use omnichannel cloud contact center that helps companies provide superior customer service at a lower cost. It is not used to create fast personalized user experiences and recommendations."], "answers": ["<p>Personalize</p>", "<p>Kendra</p>", "<p>Connect</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "A start-up would like to rapidly create customized user experiences. Which AWS service can help?", "related_lectures": []}, {"_class": "assessment", "id": 47639002, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A research team would like to group articles by topics using Natural Language Processing (NLP).&nbsp;Which service should they use?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon Translate is a neural machine translation service that delivers fast, high-quality, and affordable language translation. It does not use natural language processing (NLP).", "Amazon Comprehend is a natural language processing (NLP) service that uses machine learning to find meaning and insights in text.", "Amazon Lex is a service for building conversational interfaces into any application using voice and text. Lex provides the advanced deep learning functionalities of automatic speech recognition (ASR) for converting speech to text, and natural language understanding (NLU) to recognize the intent of the text, to enable you to build applications with highly engaging user experiences and lifelike conversational interactions. It does not use natural language processing (NLP).", "Amazon Rekognition makes it easy to add image and video analysis to your applications using proven, highly scalable, deep learning technology that requires no machine learning expertise to use. It does not use natural language processing (NLP)."], "answers": ["<p>Translate</p>", "<p>Comprehend</p>", "<p>Lex</p>", "<p>Rekognition</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "A research team would like to group articles by topics using Natural Language Processing (NLP).&nbsp;Which service should they use?", "related_lectures": []}, {"_class": "assessment", "id": 47639006, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company would like to convert its documents into different languages, with natural and accurate wording. What should they use?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon Transcribe is an AWS service that makes it easy for customers to convert speech-to-text.", "Amazon Polly is a service that turns text into lifelike speech.", "Amazon Translate is a neural machine translation service that delivers fast, high-quality, and affordable language translation.", "This is a distractor. This service does not exist. "], "answers": ["<p>Transcribe</p>", "<p>Polly</p>", "<p>Translate</p>", "<p>WordTranslator</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "A company would like to convert its documents into different languages, with natural and accurate wording. What should they use?", "related_lectures": []}, {"_class": "assessment", "id": 47639012, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A developer would like to build, train, and deploy a machine learning model quickly. Which service can he use?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon SageMaker is a fully managed service that provides every developer and data scientist with the ability to build, train, and deploy machine learning (ML) models quickly. SageMaker removes the heavy lifting from each step of the machine learning process to make it easier to develop high quality models.", "Amazon Polly is a service that turns text into lifelike speech. It is not used to build, train, and deploy machine learning models quickly.", "Amazon Comprehend is a natural language processing (NLP) service that uses machine learning to find meaning and insights in text. It is not used to build, train, and deploy machine learning models quickly.", "Amazon Personalize is a machine learning service that makes it easy for developers to create individualized recommendations for customers using their applications. It is not used to build, train, and deploy machine learning models quickly."], "answers": ["<p>SageMaker</p>", "<p>Polly</p>", "<p>Comprehend</p>", "<p>Personalize</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "A developer would like to build, train, and deploy a machine learning model quickly. Which service can he use?", "related_lectures": []}, {"_class": "assessment", "id": 47639118, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which AWS&nbsp;service makes it easy to convert speech-to-text?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon Connect is a self-service, cloud-based contact center service that makes it easy for any business to deliver better customer service at lower cost. It is not used to convert speech-to-text.", "Amazon Translate is a neural machine translation service that delivers fast, high-quality, and affordable language translation.", "Amazon Transcribe is an AWS service that makes it easy for customers to convert speech-to-text.", "Amazon Polly is a service that turns text into lifelike speech."], "answers": ["<p>Connect</p>", "<p>Translate</p>", "<p>Transcribe</p>", "<p>Polly</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Which AWS&nbsp;service makes it easy to convert speech-to-text?", "related_lectures": []}, {"_class": "assessment", "id": 47639124, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which of the following services is a document search service powered by machine learning?</p>", "relatedLectureIds": "", "feedbacks": ["Amazon Forecast is a fully managed service that uses machine learning to deliver highly accurate forecasts. It is not a document search service.", "Amazon Kendra is a highly accurate and easy to use enterprise search service that\u2019s powered by machine learning.", "Amazon Comprehend is a natural language processing (NLP) service that uses machine learning to find meaning and insights in text. ", "Amazon Polly is a service that turns text into lifelike speech. It is not a document search service."], "answers": ["<p>Forecast</p>", "<p>Kendra</p>", "<p>Comprehend</p>", "<p>Polly</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "Which of the following services is a document search service powered by machine learning?", "related_lectures": []}, {"_class": "assessment", "id": 51343370, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company is managing an image and video sharing platform which is used by customers around the globe. The platform is running on AWS using an S3 bucket to host both images and videos and using CloudFront as the CDN to deliver content to customers all over the world with low latency. In the last couple of months, a lot of customers have complained that they have started to see inappropriate content on the platform which started to increase in the last week. It will be very expensive and time-consuming to manually approve those images and videos by employees before its published on the platform. There is a requirement to find a solution that can automatically detect inappropriate and offensive images and videos and give you the ability to set a minimum confidence threshold for items that will be flagged and allows for manual review. Which AWS service can fit the requirement?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon Polly</p>", "<p>Amazon Translate</p>", "<p>Amazon Lex</p>", "<p>Amazon Rekognition</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "A company is managing an image and video sharing platform which is used by customers around the globe. The platform is running on AWS using an S3 bucket to host both images and videos and using CloudFront as the CDN to deliver content to customers all over the world with low latency. In the last couple of months, a lot of customers have complained that they have started to see inappropriate content on the platform which started to increase in the last week. It will be very expensive and time-consuming to manually approve those images and videos by employees before its published on the platform. There is a requirement to find a solution that can automatically detect inappropriate and offensive images and videos and give you the ability to set a minimum confidence threshold for items that will be flagged and allows for manual review. Which AWS service can fit the requirement?", "related_lectures": []}, {"_class": "assessment", "id": 51343376, "assessment_type": "multiple-choice", "prompt": {"question": "<p>An online medical company that allows you to book an appointment with doctors using through a phone call is using AWS to host their infrastructure. They are using Amazon Connect and Amazon Lex to receive calls and create a workflow, book an appointment, and pay. According to the company\u2019s policy, all calls must be recorded for review. But, there is a requirement to remove any Personally Identifiable Information (PII) from the call before it's saved. What do you recommend to use which helps in removing PII from calls?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon Polly</p>", "<p>Amazon Transcribe</p>", "<p>Amazon Recognition</p>", "<p>Amazon Forecast</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "An online medical company that allows you to book an appointment with doctors using through a phone call is using AWS to host their infrastructure. They are using Amazon Connect and Amazon Lex to receive calls and create a workflow, book an appointment, and pay. According to the company\u2019s policy, all calls must be recorded for review. But, there is a requirement to remove any Personally Identifiable Information (PII) from the call before it's saved. What do you recommend to use which helps in removing PII from calls?", "related_lectures": []}, {"_class": "assessment", "id": 51343382, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Amazon Polly allows you to turn text into speech. It has two important features. First is \u2026\u2026\u2026\u2026\u2026\u2026.. which allows you to customize the pronunciation of words (e.g., \u201cAmazon EC2\u201d will be \u201cAmazon Elastic Compute Cloud\u201d). The second is \u2026\u2026\u2026\u2026\u2026\u2026.. which allows you to emphasize words, including breathing sounds, whispering, and more.</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Speech Synthesis Markup Language (SSML), Pronunciation Lexicons</p>", "<p>Pronunciation Lexicons, Security Assertion Markup Language (SAML)</p>", "<p>Pronunciation Lexicons, Speech Synthesis Markup Language (SSML)</p>", "<p>Security Assertion Markup Language (SAML), Pronunciation Lexicons</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Amazon Polly allows you to turn text into speech. It has two important features. First is \u2026\u2026\u2026\u2026\u2026\u2026.. which allows you to customize the pronunciation of words (e.g., \u201cAmazon EC2\u201d will be \u201cAmazon Elastic Compute Cloud\u201d). The second is \u2026\u2026\u2026\u2026\u2026\u2026.. which allows you to emphasize words, including breathing sounds, whispering, and more.", "related_lectures": []}, {"_class": "assessment", "id": 51343488, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A medical company is in the process of implementing a solution to detect, extract, and analyze information from unstructured medical text like doctors\u2019 notes, clinical trial reports, and radiology reports. Those documents are uploaded and stored on S3 buckets. According to the company\u2019s regulations, the solution must be designed and implemented to keep patients\u2019 privacy by identifying Protected Health Information (PHI) so the solution will be eligible with HIPAA. Which AWS service should you use?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon Comprehend Medical</p>", "<p>Amazon Rekognition</p>", "<p>Amazon Polly</p>", "<p>Amazon Translate</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "A medical company is in the process of implementing a solution to detect, extract, and analyze information from unstructured medical text like doctors\u2019 notes, clinical trial reports, and radiology reports. Those documents are uploaded and stored on S3 buckets. According to the company\u2019s regulations, the solution must be designed and implemented to keep patients\u2019 privacy by identifying Protected Health Information (PHI) so the solution will be eligible with HIPAA. Which AWS service should you use?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>
