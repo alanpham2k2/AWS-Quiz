@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+
+    <style>
+      body {
+        font-family: sf pro text, -apple-system, BlinkMacSystemFont, Roboto,
+          segoe ui, Helvetica, Arial, sans-serif, apple color emoji,
+          segoe ui emoji, segoe ui symbol;
+        font-weight: 400;
+        line-height: 22.4px;
+        font-size: 16px;
+      }
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      ul,
+      ol {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        max-width: none;
+      }
+      code {
+        background-color: #fff;
+        border: 1px solid #d1d7dc;
+        color: #b4690e;
+        font-size: 90%;
+        padding: 0.2rem 0.4rem;
+      }
+      .quiz-content {
+        padding: 2.4rem;
+        word-break: break-word;
+        max-width: 86rem;
+        margin: 0 auto;
+      }
+      .quiz-container {
+        margin: 0 auto;
+        max-width: 84rem;
+        padding: 0;
+      }
+      .question {
+        margin-bottom: 5rem;
+      }
+      .question span {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .question-prompt {
+        margin-top: 0.8rem;
+        font-weight: 700;
+      }
+      .question-answer {
+        margin-top: 1.6rem;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+      .question-answer label {
+        max-width: 80rem;
+        position: relative;
+        cursor: pointer;
+        display: flex;
+        min-width: 18rem;
+        border: solid #1c1d1f 2px;
+      }
+      .question-answer div {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        width: 100%;
+      }
+      .question-answer div:hover {
+        background-color: #f5f5f5;
+      }
+      .question-answer input {
+        display: none;
+      }
+      .question-answer span {
+        width: 1rem;
+        height: 1rem;
+        margin-right: 1.6rem;
+        top: 0;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        border: 0.2rem solid #1c1d1f;
+        position: relative;
+      }
+      .selected {
+        background: #1c1d1f;
+        box-shadow: 0 0 0 0.4rem #fff inset;
+      }
+      .score {
+              position: fixed;
+            }
+    </style>
+  </head>
+
+  <body onload="main()">
+    <div id="score" class="score">
+      <span>Score: N/A of N/A</span>
+    </div>
+    <div id="quiz-container" class="quiz-content"></div>
+
+    <script>
+      const quizData = {"pass_percent": 70, "questions": [{"_class": "assessment", "id": 37604473, "assessment_type": "multiple-choice", "prompt": {"question": "<p>As part of your Disaster Recovery plan, you would like to have only the critical infrastructure up and running in AWS. You don't mind a longer Recovery Time Objective (RTO). Which DR strategy do you recommend?</p>", "relatedLectureIds": "", "feedbacks": ["", "If you're interested, read more about Disaster Recovery options in AWS here: https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html", "", ""], "answers": ["<p>Backup and Restore</p>", "<p>Pilot Light</p>", "<p>Warm Standby</p>", "<p>Multi-Site</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "As part of your Disaster Recovery plan, you would like to have only the critical infrastructure up and running in AWS. You don't mind a longer Recovery Time Objective (RTO). Which DR strategy do you recommend?", "related_lectures": []}, {"_class": "assessment", "id": 37604477, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "question": "<p>You would like to get the Disaster Recovery strategy with the lowest Recovery Time Objective (RTO) and Recovery Point Objective (RPO), regardless of the cost. Which DR should you choose?</p>", "feedbacks": ["", "", "", "If you're interested, read more about Disaster Recovery options in AWS here: https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html"], "answers": ["<p>Backup and Restore</p>", "<p>Pilot Light</p>", "<p>Warm Standby</p>", "<p>Multi-Site</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "You would like to get the Disaster Recovery strategy with the lowest Recovery Time Objective (RTO) and Recovery Point Objective (RPO), regardless of the cost. Which DR should you choose?", "related_lectures": []}, {"_class": "assessment", "id": 37604479, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>Backup and Restore</p>", "<p>Pilot Light</p>", "<p>Warm Standby</p>", "<p>Multi-Site</p>"], "question": "<p>Which of the following Disaster Recovery strategies has a potentially high Recovery Point Objective (RPO) and Recovery Time Objective (RTO)?</p>", "relatedLectureIds": "", "feedbacks": ["If you're interested, read more about Disaster Recovery options in AWS here: https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html", "", "", ""]}, "correct_response": ["a"], "section": "", "question_plain": "Which of the following Disaster Recovery strategies has a potentially high Recovery Point Objective (RPO) and Recovery Time Objective (RTO)?", "related_lectures": []}, {"_class": "assessment", "id": 37604481, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "question": "<p>You want to make a Disaster Recovery plan where you have a scaled-down version of your system up and running, and when a disaster happens, it scales up quickly. Which DR strategy should you choose?</p>", "answers": ["<p>Backup and Restore</p>", "<p>Pilot Light</p>", "<p>Warm Standby</p>", "<p>Multi-Site</p>"], "feedbacks": ["", "", "If you're interested, read more about Disaster Recovery options in AWS here: https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html", ""]}, "correct_response": ["c"], "section": "", "question_plain": "You want to make a Disaster Recovery plan where you have a scaled-down version of your system up and running, and when a disaster happens, it scales up quickly. Which DR strategy should you choose?", "related_lectures": []}, {"_class": "assessment", "id": 37604485, "assessment_type": "multiple-choice", "prompt": {"feedbacks": ["", ""], "question": "<p>You have an on-premises Oracle database that you want to migrate to AWS, specifically to Amazon Aurora. How would you do the migration?</p>", "relatedLectureIds": "", "answers": ["<p>Use AWS Schema Conversion Tool (AWS SCT) to convert the database schema, then use AWS Database Migration Service (AWS DMS) to migrate the data</p>", "<p>Use AWS Database Migration Service (AWS DMS) to convert the database schema, then use AWS Schema Conversion Tool (AWS SCT) to migrate the data</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "You have an on-premises Oracle database that you want to migrate to AWS, specifically to Amazon Aurora. How would you do the migration?", "related_lectures": []}, {"_class": "assessment", "id": 37604491, "assessment_type": "multiple-choice", "prompt": {"answers": ["<p>Amazon S3</p>", "<p>Amazon EBS</p>", "<p>Amazon EFS</p>", "<p>Amazon FSx for Windows File Server</p>"], "question": "<p>AWS DataSync supports the following locations, <strong>EXCEPT</strong> ....................</p>", "feedbacks": ["", "", "", ""], "relatedLectureIds": ""}, "correct_response": ["b"], "section": "", "question_plain": "AWS DataSync supports the following locations, EXCEPT ....................", "related_lectures": []}, {"_class": "assessment", "id": 37604493, "assessment_type": "multiple-choice", "prompt": {"relatedLectureIds": "", "question": "<p>You are running many resources in AWS such as EC2 instances, EBS volumes, DynamoDB tables... You want an easy way to manage backups across all these AWS services from a single place. Which AWS offering makes this process easy?</p>", "answers": ["<p>Amazon S3</p>", "<p>AWS Storage Gateway</p>", "<p>AWS Backup</p>", "<p>EC2 Snapshots</p>"], "feedbacks": ["", "", "AWS Backup enables you to centralize and automate data protection across AWS services. It helps you support your regulatory compliance or business policies for data protection.", ""]}, "correct_response": ["c"], "section": "", "question_plain": "You are running many resources in AWS such as EC2 instances, EBS volumes, DynamoDB tables... You want an easy way to manage backups across all these AWS services from a single place. Which AWS offering makes this process easy?", "related_lectures": []}, {"_class": "assessment", "id": 51343970, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company planning to migrate its existing websites, applications, servers, virtual machines, and data to AWS. They want to do a lift-and-shift migration with minimum downtime and reduced costs. Which AWS service can help in this scenario?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>AWS Database Migration Service</p>", "<p>AWS Application Migration Service</p>", "<p>AWS Backup</p>", "<p>AWS Schema Conversion Tool</p>"]}, "correct_response": ["b"], "section": "", "question_plain": "A company planning to migrate its existing websites, applications, servers, virtual machines, and data to AWS. They want to do a lift-and-shift migration with minimum downtime and reduced costs. Which AWS service can help in this scenario?", "related_lectures": []}, {"_class": "assessment", "id": 51343974, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company is using VMware on its on-premises data center to manage its infrastructure. There is a requirement to extend their data center and infrastructure to AWS but keep using the technology stack they are using which is VMware. Which AWS service can they use?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>VMware Cloud on AWS</p>", "<p>AWS DataSync</p>", "<p>AWS Application Migration Service</p>", "<p>AWS Application Discovery Service</p>"]}, "correct_response": ["a"], "section": "", "question_plain": "A company is using VMware on its on-premises data center to manage its infrastructure. There is a requirement to extend their data center and infrastructure to AWS but keep using the technology stack they are using which is VMware. Which AWS service can they use?", "related_lectures": []}, {"_class": "assessment", "id": 51343980, "assessment_type": "multiple-choice", "prompt": {"question": "<p>A company is using RDS for MySQL as their main database but, lately they have been facing issues in managing the database, performance issues, and the scalability. And they have decided to use Aurora for MySQL instead for better performance, less complexity and less administrative tasks required. What is the best way and most cost-effective way to migrate from RDS for MySQL to Aurora for MySQL?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Raise an AWS support ticket to do the migration as it is not supported</p>", "<p>Create a database dump from RDS from MySQL, store it in an S3 bucket, then restore it to Aurora for MySQL</p>", "<p>You can not migrate directly to Aurora for MySQL, you have to create a custom application to insert the data manually</p>", "<p>Create a snapshot from RDS for MySQL and restore it to Aurora for MySQL</p>"]}, "correct_response": ["d"], "section": "", "question_plain": "A company is using RDS for MySQL as their main database but, lately they have been facing issues in managing the database, performance issues, and the scalability. And they have decided to use Aurora for MySQL instead for better performance, less complexity and less administrative tasks required. What is the best way and most cost-effective way to migrate from RDS for MySQL to Aurora for MySQL?", "related_lectures": []}, {"_class": "assessment", "id": 51343984, "assessment_type": "multiple-choice", "prompt": {"question": "<p>Which AWS service can you use to automate the backup across different AWS services such as RDS, DynamoDB, Aurora, and EFS file systems, and EBS volumes?</p>", "relatedLectureIds": "", "feedbacks": ["", "", "", ""], "answers": ["<p>Amazon S3 Lifecycle Policy</p>", "<p>AWS DataSync</p>", "<p>AWS Backup</p>", "<p>Amazon Glacier</p>"]}, "correct_response": ["c"], "section": "", "question_plain": "Which AWS service can you use to automate the backup across different AWS services such as RDS, DynamoDB, Aurora, and EFS file systems, and EBS volumes?", "related_lectures": []}]};
+      var correct = 0;
+      var total = 0;
+      const questionData = quizData.questions
+      const passPercent = quizData.pass_percent
+
+      function main() {
+        total = questionData.length;
+
+        var questions = [];
+        for (var i = 0; i < questionData.length; i++) {
+          var question = questionData[i];
+          var questionText = question.prompt.question;
+          var answers = question.prompt.answers;
+          var correctAnswer = question.correct_response[0];
+          var correctAnswerText = answers[correctAnswer.charCodeAt(0) - 97];
+          var questionObj = {
+            question: questionText,
+            correctAnswer: correctAnswerText,
+            answers: answers,
+            id: question.id,
+          };
+          questions.push(questionObj);
+        }
+
+        updateScore();
+
+        // display the questions
+        var questionsContainer = document.getElementById("quiz-container");
+        for (var i = 0; i < questions.length; i++) {
+          var question = questions[i];
+          var questionElement = document.createElement("form");
+          questionElement.className = "question";
+          questionElement.innerHTML =
+            "<span>Question " +
+            (i + 1) +
+            ":</span>" +
+            '<div class="question-prompt">' +
+            question.question +
+            "</div>";
+          questionElement.id = question.id;
+          questionElement.classList.add("quiz-container");
+          var answersElement = document.createElement("ul");
+          answersElement.className = "answers";
+          for (var j = 0; j < question.answers.length; j++) {
+            var answer = question.answers[j];
+            var answerElement = document.createElement("li");
+            answerElement.className = "answer";
+            answerElement.innerHTML =
+              '<label for="input-' +
+              question.id +
+              "-" +
+              j +
+              '"><div onclick="select(' +
+              question.id +
+              ", " +
+              j +
+              ')"><span></span><input id="input-' +
+              question.id +
+              "-" +
+              j +
+              '" type="radio" name="question' +
+              i +
+              '" value="' +
+              j +
+              '">' +
+              answer +
+              "</input></div></label>";
+            answerElement.classList.add("question-answer");
+            answersElement.appendChild(answerElement);
+          }
+
+          questionElement.appendChild(answersElement);
+
+          // add a submit button
+          var submitButton = document.createElement("button");
+          submitButton.className = "submit";
+          submitButton.innerHTML = "Submit";
+          submitButton.classList.add("submit-button");
+
+          submitButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            var questionElement = e.target.parentElement;
+            var questionId = questionElement.id;
+            var question = questions.filter(function (q) {
+              return q.id == questionId;
+            })[0];
+
+            // set the border color of all answers to black
+            var answers = questionElement.getElementsByClassName("answer");
+            for (var i = 0; i < answers.length; i++) {
+              console.log(answers[i]);
+              answers[i].children[0].style.borderColor = "#1c1d1f";
+            }
+
+            var answer = questionElement.querySelector(
+              'input[type="radio"]:checked'
+            );
+            if (answer) {
+              var answerIndex = answer.value;
+              var answerText = question.answers[answerIndex];
+              if (answerText == question.correctAnswer) {
+                answer.parentElement.parentElement.style.borderColor =
+                  "limegreen";
+                // alert("Correct!");
+                correct++;
+                updateScore();
+              } else {
+                answer.parentElement.parentElement.style.borderColor = "red";
+                // alert("Incorrect!");
+              }
+            } else {
+              alert("Please select an answer.");
+            }
+          });
+
+          // add button
+          questionElement.appendChild(submitButton);
+
+          questionsContainer.appendChild(questionElement);
+        }
+      }
+
+      function select(question, answer) {
+        var questionElement = document.getElementById(question);
+        var answers = questionElement.getElementsByClassName("answer");
+        for (var i = 0; i < answers.length; i++) {
+          var span = answers[i].children[0].children[0].children[0];
+          var input = answers[i].children[0].children[0].children[1];
+          span.classList.remove("selected");
+          input.checked = false;
+        }
+        var span = answers[answer].children[0].children[0].children[0];
+        var input = answers[answer].children[0].children[0].children[1];
+        span.classList.add("selected");
+        input.checked = true;
+      }
+
+      function updateScore() {
+        var scoreElem = document.getElementById("score");
+        const score = (correct / total) * 100;
+        scoreElem.innerHTML = "Score: " + score + "/" + passPercent + "%";
+      }
+    </script>
+  </body>
+</html>
